@@ -10,11 +10,12 @@ import javax.slee.resource.*;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageListener;
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+//import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.util.ErrorHandler;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.util.ErrorHandler;
 
 /**
  * 
@@ -23,8 +24,8 @@ import org.springframework.util.ErrorHandler;
  * 
  */
 
-@Configuration
-@EnableRabbit
+//@Configuration
+//@EnableRabbit
 public class AMQPResourceAdaptor implements ResourceAdaptor {
 
 	private String amqpHost;
@@ -178,7 +179,7 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 	}
 	
 	public void raActive() {
-		// TODO: allocate any system resources required to allow the resource
+		// allocate any system resources required to allow the resource
 		// adaptor to interact with the underlying resource.
 		// allocate any system resources required to allow the resource
 		// adaptor to interact with the underlying resource.
@@ -188,48 +189,23 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 			return;
 		}
 
-		CachingConnectionFactory connectionFactory = new CachingConnectionFactory(amqpHost);
-//				final MessageConverter messageConverter = new SimpleMessageConverter();
-		connectionFactory.setUsername("guest");
-		connectionFactory.setPassword("guest");
+		CachingConnectionFactory connectionFactory = new CachingConnectionFactory(amqpHost, amqpPort);
+
 		container = new SimpleMessageListenerContainer(connectionFactory);
-		container.setConnectionFactory(connectionFactory);
+		
+		 Object listener = new Object() {
+		        public void handleMessage(String foo) {
+		            tracer.info(foo);
+		        }
+		    };
+		    
+		MessageListenerAdapter adapter = new MessageListenerAdapter(listener);
+		container.setMessageListener(adapter);
 		container.setQueueNames(amqpQeueName);
-		container.setMessageListener(new MessageListener() {
-			public void onMessage(Message message) {
-				// simply printing out the operation, but expensive computation could happen here
-				tracer.fine("Received from RabbitMQ: " + message);
-				try {
-					// Create a unique ID for the connection - this is also the activity handle
-					ConsumerID id = new ConsumerID(instance.incrementAndGet());
-					tracer.info("accepting connections" + id);
-					// Create a new connection handler thread and start it
-					AMQPWrapper conn = new AMQPWrapper(id, AMQPResourceAdaptor.this,  amqpHost,amqpQeueName);
-					publishEvent(conn, message);
-
-				} catch (Exception e) {
-					tracer.severe("error accepting connection", e);
-				}
-			}
-		});
-
-		// set a simple error handler
-		container.setErrorHandler(new ErrorHandler() {
-			public void handleError(Throwable t) {
-				t.printStackTrace();
-			}
-		});
-
-		// register a shutdown hook with the JVM
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				tracer.fine("Shutting down BigOperationWorker");
-				container.shutdown();
-			}
-		});
 
 		container.start();
+		
+		
 		setState(STATE_ACTIVE);
 
 		if (tracer.isFineEnabled()) {
