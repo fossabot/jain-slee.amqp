@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.mobicents</groupId>
+		<artifactId>mobicents-parent</artifactId>
+		<version>6.1.4.GA-TelScale</version>
+	</parent>
+
+	<groupId>org.mobicents.resources</groupId>
+	<artifactId>mobicents-slee-ra-amqp</artifactId>
+	<version>1.0</version>
+
+	<name>Mobicents :: Resources :: ${project.artifactId}</name>
+
+	<modules>
+		<module>library</module>
+		<module>events</module>
+		<module>ratype</module>
+		<module>ra</module>
+		<module>du</module>
+	</modules>
+
+	<properties>
+		<docs.profile>mobicents</docs.profile>
+		<docs.ra.name>AMQP</docs.ra.name>
+		<docs.ra.dirname>AMQP</docs.ra.dirname>
+		<docs.bookid>AMQP</docs.bookid>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<modules>
+				<module>docs</module>
+				<module>release</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>maven-release</id>
+			<modules>
+				<module>docs</module>
+				<module>release</module>
+			</modules>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-release-plugin</artifactId>
+						<!-- <configuration> -->
+						<!-- <autoVersionSubmodules>true</autoVersionSubmodules> -->
+						<!-- <tagBase>https://mobicents.googlecode.com/svn/tags/servers/jain-slee/2.x.y/resources/map</tagBase> -->
+						<!-- <branchBase>https://mobicents.googlecode.com/svn/branches/servers/jain-slee/2.x.y/resources/map</branchBase> -->
+						<!-- <preparationGoals>clean install</preparationGoals> -->
+						<!-- </configuration> -->
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<!-- <scm> -->
+	<!-- <connection>scm:svn:https://mobicents.googlecode.com/svn/trunk/servers/jain-slee/resources/map</connection> -->
+	<!-- <developerConnection>scm:svn:https://mobicents.googlecode.com/svn/trunk/servers/jain-slee/resources/map</developerConnection> -->
+	<!-- <url>http://mobicents.googlecode.com/svn/trunk/servers/jain-slee/resources/map</url> -->
+	<!-- </scm> -->
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mobicents.tools</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<inherited>false</inherited>
+				<configuration>
+					<excludePoms />
+					<classpathExcludes>
+						<exclude>xml-apis:xml-apis</exclude>
+						<exclude>jtidy:jtidy</exclude>
+					</classpathExcludes>
+					<resolveTransitiveDependencies>true</resolveTransitiveDependencies>
+					<eclipseProjectName>mobicents-slee-ra-amqp</eclipseProjectName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- <repositories> -->
+	<!-- <repository> -->
+	<!-- <releases> -->
+	<!-- <enabled>true</enabled> -->
+	<!-- <updatePolicy>never</updatePolicy> -->
+	<!-- </releases> -->
+	<!-- <snapshots> -->
+	<!-- <enabled>true</enabled> -->
+	<!-- <updatePolicy>never</updatePolicy> -->
+	<!-- </snapshots> -->
+	<!-- <id>telscale-releases-repository</id> -->
+	<!-- <name>TelScale Releases Repository</name> -->
+	<!-- <url>http://telestax.artifactoryonline.com/telestax/releases</url> -->
+	<!-- </repository> -->
+	<!-- </repositories> -->
+</project>

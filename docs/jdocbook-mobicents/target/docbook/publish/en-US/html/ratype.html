@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">Chapter 2. Resource Adaptor Type</title><link rel="stylesheet" href="css/jbossorg.css" type="text/css"/><meta xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL Stylesheets V1.74.0"/><link rel="home" href="index.html" title="TRITUX JAIN SLEE AMQP Resource Adaptor User Guide"/><link rel="up" href="index.html" title="TRITUX JAIN SLEE AMQP Resource Adaptor User Guide"/><link rel="prev" href="introduction.html" title="Chapter 1. Introduction to TRITUX JAIN SLEE AMQP Resource Adaptor"/><link rel="next" href="ra.html" title="Chapter 3. Resource Adaptor Implementation"/></head><body><p id="title"><a href="http://www.jboss.org" class="site_href"><strong>JBoss.org</strong></a><a href="http://docs.jboss.org/" class="doc_href"><strong>Community Documentation</strong></a></p><ul class="docnav"><li class="previous"><a accesskey="p" href="introduction.html"><strong>Prev</strong></a></li><li class="next"><a accesskey="n" href="ra.html"><strong>Next</strong></a></li></ul><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype"/>Chapter 2. Resource Adaptor Type</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="ratype.html#ratype_activities">2.1. Activities</a></span></dt><dt><span class="section"><a href="ratype.html#ratype_events">2.2. Events</a></span></dt><dt><span class="section"><a href="ratype.html#ratype_aci_factory">2.3. Activity Context Interface Factory</a></span></dt><dt><span class="section"><a href="ratype.html#ratype_ra_interface">2.4. Resource Adaptor Interface</a></span></dt><dt><span class="section"><a href="ratype.html#ratype_restrictions">2.5. Restrictions</a></span></dt><dt><span class="section"><a href="ratype.html#ratype_sbb_code_examples">2.6. Sbb Code Examples</a></span></dt></dl></div><p>AMQP Resource Adaptor Type is defined by TRITUX team as part of effort to standardize RA Types.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_activities"/>2.1. Activities</h2></div></div></div><p>
+		An AMQP activity object represents a set of related events in an
+		AMQP resource. This RA Type defines only one activity
+		object:
+	</p><div class="variablelist"><dl><dt><span class="term">AMQPWrapper</span></dt><dd><p>
+					All the events related to AMQP are fired on this activity.
+ 					Class name is
+					<code class="literal">
+						org.mobicents.slee.resource.amqp.AMQPWrapper
+					</code>
+				</p><p>
+					New
+					<code class="literal">AMQPWrapper</code>
+					activity objects are created via specific AMQP Service interface. Check <a class="xref" href="ratype.html#ratype_ra_interface" title="2.4. Resource Adaptor Interface">Section 2.4, “Resource Adaptor Interface”</a> section for available services. 
+				</p><p>
+					Depending on amqp implementation AMQPActivity is used for sending/receiving messages and managing the server. 
+				</p></dd></dl></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_events"/>2.2. Events</h2></div></div></div><p>
+		Events represent's AMQP's common services are fired on
+		<code class="literal">AMQPTemplate</code>
+
+	</p><div xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>For proper render of this table prefixes, for entries on some columns are ommited. For prefix values, for each column, please see
+			list below: </p><div class="variablelist"><dl><dt><span class="term">Name</span></dt><dd><p>
+						org.springframework.amqp.core.Message.
+					</p></dd><dt><span class="term">Event Class</span></dt><dd><p>
+						org.mobicents.slee.resource.amqp.AMQPEvent
+					</p></dd></dl></div><p>Version for all defined events is 1.0</p><p>Vendor for all defined events is org.mobicents</p><p>
+			Spaces where introduced in
+			<code class="literal">Name</code>
+			column values, to correctly render the table. Please remove them when using copy/paste.
+		</p></div><div class="table"><a id="d0e402"/><p class="title"><b>Table 2.1. Dialog events
+		</b></p><div class="table-contents"><table summary="Dialog events&#xA;&#x9;&#x9;" width="100%" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Name</th><th>Event Class</th><th>Comments</th></tr></thead><tbody><tr><td>AMQPEvent</td><td>AMQPEvent</td><td>Event representing sending and receiving messages.</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_aci_factory"/>2.3. Activity Context Interface Factory</h2></div></div></div><p>
+		The interface of the AMQP resource adaptor type specific
+		Activity Context Interface Factory is defined as follows:
+	</p><pre class="programlisting">
+package org.mobicents.slee.resource.amqp;
+
+
+import javax.slee.ActivityContextInterface;
+import javax.slee.FactoryException;
+import javax.slee.UnrecognizedActivityException;
+import javax.slee.resource.ResourceAdaptorTypeID;
+
+import org.springframework.amqp.core.AmqpTemplate;
+
+public interface AMQPActivityContextInterfaceFactory {
+	
+	public static final ResourceAdaptorTypeID RESOURCE_ADAPTOR_TYPE_ID = new ResourceAdaptorTypeID(
+            "AMQPResourceAdaptorType", "org.mobicents", "1.0");
+
+	public ActivityContextInterface getActivityContextInterface(AmqpTemplate amqpTemplate)
+			throws NullPointerException, UnrecognizedActivityException,
+			FactoryException;
+}
+	</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_ra_interface"/>2.4. Resource Adaptor Interface</h2></div></div></div><p>
+		The AMQP Resource Adaptor SBB Interface provides SBBs with access to the AMQP objects required for 
+		creating a new amqp Message Request/Response. It is defined as follows:
+	</p><pre class="programlisting">
+package org.springframework.amqp.core;
+
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.support.converter.MessageConverter;
+
+
+public interface AMQPActivity {
+
+	void send(Message message);
+	
+	void send(String routingKey, Message message);
+	
+	void send(String exchange, String routingKey, Message message);
+	
+
+
+	void convertAndSend(Object message);
+	
+	void convertAndSend(String routingKey, Object message);
+	
+	void convertAndSend(String exchange, String routingKey, Object message);
+	
+	void convertAndSend(Object message, MessagePostProcessor messagePostProcessor);
+	
+	void convertAndSend(String routingKey, Object message, MessagePostProcessor messagePostProcessor);
+	
+	void convertAndSend(String exchange, String routingKey, Object message,	MessagePostProcessor messagePostProcessor);
+	
+
+
+	Message receive();
+	
+	Message receive(String queueName);
+
+
+
+	Object receiveAndConvert();
+	
+	Object receiveAndConvert(String queueName);
+
+
+
+	&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback);
+
+	&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback);
+
+	&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback, String replyExchange, String replyRoutingKey);
+
+	&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback, String replyExchange, String replyRoutingKey);
+
+	&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback, ReplyToAddressCallback&lt;S&gt; replyToAddressCallback);
+
+	&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback, ReplyToAddressCallback&lt;S&gt; replyToAddressCallback);
+
+
+
+	Message sendAndReceive(Message message);
+
+	Message sendAndReceive(String routingKey, Message message);
+
+	Message sendAndReceive(String exchange, String routingKey, Message message);
+
+
+
+	Object convertSendAndReceive(Object message);
+
+	Object convertSendAndReceive(String routingKey, Object message);
+
+	Object convertSendAndReceive(String exchange, String routingKey, Object message);
+
+	Object convertSendAndReceive(Object message, MessagePostProcessor messagePostProcessor);
+
+	Object convertSendAndReceive(String routingKey, Object message, MessagePostProcessor messagePostProcessor);
+
+	Object convertSendAndReceive(String exchange, String routingKey, Object message, MessagePostProcessor messagePostProcessor);
+	
+}
+	
+	</pre><p>send methods for messages.</p><div class="variablelist"><dl><dt><span class="term">void send(Message message);</span></dt><dd><p>this method Send a message to a default exchange with a default routing key.</p></dd><dt><span class="term">void send(String routingKey, Message message);</span></dt><dd><p>this method Send a message to a default exchange with a specific routing key.</p></dd><dt><span class="term">void send(String exchange, String routingKey, Message message);</span></dt><dd><p>this method Send a message to a specific exchange with a specific routing key.</p></dd></dl></div><p>send methods with conversion.</p><div class="variablelist"><dl><dt><span class="term">void convertAndSend(Object message);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a default exchange with a default routing key.</p></dd><dt><span class="term">void convertAndSend(String routingKey, Object message);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a default exchange with a specific routing key.</p></dd><dt><span class="term">void convertAndSend(String exchange, String routingKey, Object message);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a specific exchange with a specific routing key.</p></dd><dt><span class="term">void convertAndSend(Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a default exchange with a default routing key.</p></dd><dt><span class="term">void convertAndSend(String routingKey, Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a default exchange with a specific routing key.</p></dd><dt><span class="term">void convertAndSend(String exchange, String routingKey, Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a specific exchange with a specific routing key.</p></dd></dl></div><p>receive methods for messages.</p><div class="variablelist"><dl><dt><span class="term">Message receive();</span></dt><dd><p>Receive a message if there is one from a default queue. Returns immediately, possibly with a null value.</p></dd><dt><span class="term">Message receive(String queueName);</span></dt><dd><p>Receive a message if there is one from a specific queue. Returns immediately, possibly with a null value.</p></dd></dl></div><p>receive methods with conversion.</p><div class="variablelist"><dl><dt><span class="term">Object receiveAndConvert();</span></dt><dd><p>Receive a message if there is one from a default queue and convert it to a Java object. Returns immediately, possibly with a null value.</p></dd><dt><span class="term">Object receiveAndConvert(String queueName);</span></dt><dd><p>Receive a message if there is one from a specific queue and convert it to a Java object. Returns immediately, possibly with a null value.</p></dd></dl></div><p>receive and send methods for provided callback.</p><div class="variablelist"><dl><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback);</span></dt><dd><p>Receive a message if there is one from a default queue, invoke provided ReceiveAndReplyCallback 
+				and send reply message, if the callback returns one, to the  replyTo  org.springframework.amqp.core.Address
+				from org.springframework.amqp.core.MessageProperties or to default exchange and default routingKey.</p></dd><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback);</span></dt><dd><p>Receive a message if there is one from provided queue, invoke provided ReceiveAndReplyCallback 
+				and send reply message, if the callback returns one, to the replyTo org.springframework.amqp.core.Address 
+				from org.springframework.amqp.core.MessageProperties or to default exchange and default routingKey.</p></dd><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback, String replyExchange, String replyRoutingKey);</span></dt><dd><p>Receive a message if there is one from default queue, invoke provided ReceiveAndReplyCallback
+	 			and send reply message, if the callback returns one,
+	 			to the provided exchange and routingKey.</p></dd><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback, String replyExchange, String replyRoutingKey);</span></dt><dd><p>Receive a message if there is one from provided queue, invoke provided ReceiveAndReplyCallback
+	 			and send reply message, if the callback returns one,
+	 			to the provided exchange and routingKey.</p></dd><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback, ReplyToAddressCallback&lt;S&gt; replyToAddressCallback);</span></dt><dd><p>Receive a message if there is one from a default queue, invoke provided ReceiveAndReplyCallback
+	 			and send reply message, if the callback returns one,
+	 			to the replyTo org.springframework.amqp.core.Address
+	 			from result of ReplyToAddressCallback.</p></dd><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback, ReplyToAddressCallback&lt;S&gt; replyToAddressCallback);</span></dt><dd><p>Receive a message if there is one from provided queue, invoke provided ReceiveAndReplyCallback
+	 			and send reply message, if the callback returns one,
+	 			to the replyTo org.springframework.amqp.core.Address
+	 			from result of ReplyToAddressCallback.</p></dd></dl></div><p>send and receive methods for messages.</p><div class="variablelist"><dl><dt><span class="term">Message sendAndReceive(Message message);</span></dt><dd><p>Basic RPC pattern. Send a message to a default exchange with a default routing key and attempt to receive a
+	 			response. Implementations will normally set the reply-to header to an exclusive queue and wait up for some time
+	 			limited by a timeout.</p></dd><dt><span class="term">Message sendAndReceive(String routingKey, Message message);</span></dt><dd><p>Basic RPC pattern. Send a message to a default exchange with a specific routing key and attempt to receive a
+	 			response. Implementations will normally set the reply-to header to an exclusive queue and wait up for some time
+	 			limited by a timeout.</p></dd><dt><span class="term">Message sendAndReceive(String exchange, String routingKey, Message message);</span></dt><dd><p>Basic RPC pattern. Send a message to a specific exchange with a specific routing key and attempt to receive a
+	 			response. Implementations will normally set the reply-to header to an exclusive queue and wait up for some time
+	 			limited by a timeout.</p></dd></dl></div><p>send and receive methods with conversion.</p><div class="variablelist"><dl><dt><span class="term">Object convertSendAndReceive(Object message);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a default exchange with a default
+	 			routing key and attempt to receive a response, converting that to a Java object. Implementations will normally
+	 			set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd><dt><span class="term">Object convertSendAndReceive(String routingKey, Object message);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a default exchange with a
+	 			specific routing key and attempt to receive a response, converting that to a Java object. Implementations will
+	 			normally set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd><dt><span class="term">Object convertSendAndReceive(String exchange, String routingKey, Object message);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a specific exchange with a
+	 			specific routing key and attempt to receive a response, converting that to a Java object. Implementations will
+	 			normally set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd><dt><span class="term">Object convertSendAndReceive(Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a default exchange with a default
+	 			routing key and attempt to receive a response, converting that to a Java object. Implementations will normally
+	 			set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd><dt><span class="term">Object convertSendAndReceive(String routingKey, Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a default exchange with a
+	 			specific routing key and attempt to receive a response, converting that to a Java object. Implementations will
+	 			normally set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd><dt><span class="term">Object convertSendAndReceive(String exchange, String routingKey, Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a specific exchange with a
+	 			specific routing key and attempt to receive a response, converting that to a Java object. Implementations will
+	 			normally set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd></dl></div><div xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>we use spring amqp stack services to support all implemented services.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_restrictions"/>2.5. Restrictions</h2></div></div></div><p>
+		The resource adaptor implementation should prevent SBBs from
+		adding themselves as AMQP listeners, or changing the AMQP
+		network configuration. Any attempt to do so should be rejected
+		by throwing a SecurityException.
+	</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_sbb_code_examples"/>2.6. Sbb Code Examples</h2></div></div></div><p>The following code shows complete flow of application receiving the AMQP Message request. Application sends back an AMQP mesasge and finally application closes the AMQP connection</p><pre class="programlisting">
+public abstract class AmqpExampleSbb implements Sbb {
+	
+	private Tracer tracer;
+	
+	
+	public void onAMQPEvent(org.mobicents.slee.resources.amqp.AMQPEvent event, 
+			ActivityContextInterface aci/*, EventContext eventContext*/) {
+		
+		
+			// Get the amqpMessage
+			Massage received = event.getAmqpMessage();  
+			
+			tracer.info(  "AMQP Event received ");
+			
+			Message response = new Message("this is a reply".getBytes(), null);
+			
+		    // Get the activity object from the ACI.
+		    AMQPActivity amqp = ()AMQPActivity)aci.createcreateAMQPActivity();
+		    
+		    //reply
+		    amqp.basicPublish(response);
+		    
+		    aci.detach(getSbbLocalObject());
+		    tracer.info("Activity detached." );
+		
+	}	
+	
+	
+	
+	// TODO: Perform further operations if required in these methods.
+	public void setSbbContext(SbbContext context) { 
+		
+		this.sbbContext = (SbbContextExt) context; 
+		tracer = context.getTracer(this.getClass().getSimpleName());
+		
+	}
+	public void unsetSbbContext() { this.sbbContext = null; }
+
+	// TODO: Implement the lifecycle methods if required
+	public void sbbCreate() throws javax.slee.CreateException {}
+	public void sbbPostCreate() throws javax.slee.CreateException {}
+	public void sbbActivate() {}
+	public void sbbPassivate() {}
+	public void sbbRemove() {}
+	public void sbbLoad() {}
+	public void sbbStore() {}
+	public void sbbExceptionThrown(Exception exception, Object event, ActivityContextInterface activity) {}
+	public void sbbRolledBack(RolledBackContext context) {}
+	
+
+	
+	/**
+	 * Convenience method to retrieve the SbbContext object stored in setSbbContext.
+	 * 
+	 * TODO: If your SBB doesn't require the SbbContext object you may remove this 
+	 * method, the sbbContext variable and the variable assignment in setSbbContext().
+	 *
+	 * @return this SBB's SbbContext object
+	 */
+	
+	protected SbbContextExt getSbbContext() {
+		return sbbContext;
+	}
+
+	private SbbContextExt sbbContext; // This SBB's SbbContext
+
+}
+		</pre></div></div><ul class="docnav"><li class="previous"><a accesskey="p" href="introduction.html"><strong>Prev</strong>Chapter 1. Introduction to TRITUX JAIN SLEE AMQP ...</a></li><li class="up"><a accesskey="u" href="#"><strong>Top of page</strong></a></li><li class="home"><a accesskey="h" href="index.html"><strong>Front page</strong></a></li><li class="next"><a accesskey="n" href="ra.html"><strong>Next</strong>Chapter 3. Resource Adaptor Implementation</a></li></ul></body></html>

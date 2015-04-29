@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-Description: Mobicents :: Parent pom for 6.1.4.GA-TelScale rele
+ ases
+Implementation-Title: org.mobicents.resources:mobicents-slee-ra-amqp-d
+ ocs-sources
+Bundle-License: http://www.gnu.org/licenses/lgpl-2.1.html
+Bundle-SymbolicName: org.mobicents.resources.mobicents-slee-ra-amqp-do
+ cs-sources
+Implementation-Version: 1.0
+Built-By: akrem
+Bundle-ManifestVersion: 2
+Bnd-LastModified: 1430268029670
+Implementation-Vendor-Id: TeleStax, Inc.
+Tool: Bnd-1.15.0
+Bundle-Version: 1.0.0
+Bundle-Name: mobicents-slee-ra-amqp-docs-sources
+Created-By: Apache Maven Bundle Plugin
+Implementation-URL: http://www.mobicents.org
+Build-Jdk: 1.8.0_40
+

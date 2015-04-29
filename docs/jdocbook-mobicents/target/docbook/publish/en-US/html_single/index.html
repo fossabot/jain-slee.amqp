@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory">TRITUX JAIN SLEE AMQP Resource Adaptor User Guide</title><link rel="stylesheet" href="css/jbossorg.css" type="text/css"/><meta xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="generator" content="DocBook XSL Stylesheets V1.74.0"/><meta xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" name="description" content="TRITUX JAIN SLEE AMQP Resource Adaptor (RA) is the JAIN SLEE 1.1 RA for the AMQP Protocol, used in TRITUX JAIN SLEE platform."/></head><body><div class="book" lang="en-US"><div class="titlepage"><div><p id="title"><a href="http://www.jboss.org" class="site_href"><strong>JBoss.org</strong></a><a href="http://docs.jboss.org/" class="doc_href"><strong>Community Documentation</strong></a></p><div><h1 class="title"><a id="d0e1"/>TRITUX JAIN SLEE AMQP Resource Adaptor User Guide</h1></div><div><h2 class="subtitle"/></div><div><div xmlns="" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="authorgroup"><div class="authors">by <span xmlns="http://www.w3.org/1999/xhtml" class="firstname">Akrem</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">BenMarzouk</span> and <span xmlns="http://www.w3.org/1999/xhtml" class="firstname">Helmi</span> <span xmlns="http://www.w3.org/1999/xhtml" class="surname">BenAbdallah</span></div><div class="editors"/><div class="others"/></div></div><div><p class="copyright">Copyright © 2015 TRITUX, S.A.R.L.</p></div><div><div class="abstract"><p class="title"><b>Abstract</b></p><p>TRITUX JAIN SLEE AMQP Resource Adaptor (<acronym class="acronym">RA</acronym>) is the JAIN SLEE 1.1 RA for the AMQP Protocol, used in TRITUX JAIN SLEE platform.</p></div></div></div><hr/></div><div class="toc"><dl><dt><span class="preface"><a href="#preface">Preface</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e44">1. Document Conventions</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e54">1.1. Typographic Conventions</a></span></dt><dt><span class="section"><a href="#d0e270">1.2. Pull-quote Conventions</a></span></dt><dt><span class="section"><a href="#d0e289">1.3. Notes and Warnings</a></span></dt></dl></dd><dt><span class="section"><a href="#d0e309">2. Provide feedback to the authors!</a></span></dt></dl></dd><dt><span class="chapter"><a href="#introduction">1. Introduction to TRITUX JAIN SLEE AMQP Resource Adaptor</a></span></dt><dt><span class="chapter"><a href="#ratype">2. Resource Adaptor Type</a></span></dt><dd><dl><dt><span class="section"><a href="#ratype_activities">2.1. Activities</a></span></dt><dt><span class="section"><a href="#ratype_events">2.2. Events</a></span></dt><dt><span class="section"><a href="#ratype_aci_factory">2.3. Activity Context Interface Factory</a></span></dt><dt><span class="section"><a href="#ratype_ra_interface">2.4. Resource Adaptor Interface</a></span></dt><dt><span class="section"><a href="#ratype_restrictions">2.5. Restrictions</a></span></dt><dt><span class="section"><a href="#ratype_sbb_code_examples">2.6. Sbb Code Examples</a></span></dt></dl></dd><dt><span class="chapter"><a href="#ra">3. Resource Adaptor Implementation</a></span></dt><dd><dl><dt><span class="section"><a href="#ra_configuration">3.1. Configuration</a></span></dt><dt><span class="section"><a href="#ra_default_ra_entities">3.2. Default Resource Adaptor Entities</a></span></dt><dt><span class="section"><a href="#ra_traces_and_alarms">3.3. Traces and Alarms</a></span></dt><dd><dl><dt><span class="section"><a href="#ra_tracers">3.3.1. Tracers</a></span></dt><dt><span class="section"><a href="#ra_alarms">3.3.2. Alarms</a></span></dt></dl></dd></dl></dd><dt><span class="chapter"><a href="#setup">4. Setup</a></span></dt><dd><dl><dt><span class="section"><a href="#preinstall_requirements_and_prerequisites">4.1. Pre-Install Requirements and Prerequisites</a></span></dt><dd><dl><dt><span class="section"><a href="#hardware_requirements">4.1.1. Hardware Requirements</a></span></dt><dt><span class="section"><a href="#software_prerequisites">4.1.2. Software Prerequisites</a></span></dt></dl></dd><dt><span class="section"><a href="#source_code">4.2. TRITUX JAIN SLEE AMQP Resource Adaptor Source Code</a></span></dt><dd><dl><dt><span class="section"><a href="#release_source_building">4.2.1. Release Source Code Building</a></span></dt><dt><span class="section"><a href="#trunk_source_building">4.2.2. Development Trunk Source Building</a></span></dt></dl></dd><dt><span class="section"><a href="#install">4.3. Installing TRITUX JAIN SLEE AMQP Resource Adaptor</a></span></dt><dt><span class="section"><a href="#uninstall">4.4. Uninstalling TRITUX JAIN SLEE AMQP Resource Adaptor</a></span></dt></dl></dd><dt><span class="appendix"><a href="#revision_history">A. Revision History</a></span></dt><dt><span class="index"><a href="#d0e886">Index</a></span></dt></dl></div><div class="preface" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="preface"/>Preface</h2></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e44"/>1. Document Conventions</h2></div></div></div><p>
+		This manual uses several conventions to highlight certain words and phrases and draw attention to specific pieces of information.
+	</p><p>
+		In PDF and paper editions, this manual uses typefaces drawn from the <a class="ulink" href="https://fedorahosted.org/liberation-fonts/">Liberation Fonts</a> set. The Liberation Fonts set is also used in HTML editions if the set is installed on your system. If not, alternative but equivalent typefaces are displayed. Note: Red Hat Enterprise Linux 5 and later includes the Liberation Fonts set by default.
+	</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e54"/>1.1. Typographic Conventions</h3></div></div></div><p>
+			Four typographic conventions are used to call attention to specific words and phrases. These conventions, and the circumstances they apply to, are as follows.
+		</p><p>
+			<code class="literal">Mono-spaced Bold</code>
+		</p><p>
+			Used to highlight system input, including shell commands, file names and paths. Also used to highlight key caps and key-combinations. For example:
+		</p><div class="blockquote"><blockquote class="blockquote"><p>
+				To see the contents of the file <code class="filename">my_next_bestselling_novel</code> in your current working directory, enter the <code class="command">cat my_next_bestselling_novel</code> command at the shell prompt and press <span class="keycap"><strong>Enter</strong></span> to execute the command.
+			</p></blockquote></div><p>
+			The above includes a file name, a shell command and a key cap, all presented in Mono-spaced Bold and all distinguishable thanks to context.
+		</p><p>
+			Key-combinations can be distinguished from key caps by the hyphen connecting each part of a key-combination. For example:
+		</p><div class="blockquote"><blockquote class="blockquote"><p>
+				Press <span class="keycap"><strong>Enter</strong></span> to execute the command.
+			</p><p>
+				Press <span class="keycap"><strong>Ctrl</strong></span>+<span class="keycap"><strong>Alt</strong></span>+<span class="keycap"><strong>F1</strong></span> to switch to the first virtual terminal. Press <span class="keycap"><strong>Ctrl</strong></span>+<span class="keycap"><strong>Alt</strong></span>+<span class="keycap"><strong>F7</strong></span> to return to your X-Windows session.
+			</p></blockquote></div><p>
+			The first sentence highlights the particular key cap to press. The second highlights two sets of three key caps, each set pressed simultaneously.
+		</p><p>
+			If source code is discussed, class names, methods, functions, variable names and returned values mentioned within a paragraph will be presented as above, in <code class="literal">Mono-spaced Bold</code>. For example:
+		</p><div class="blockquote"><blockquote class="blockquote"><p>
+				File-related classes include <code class="classname">filesystem</code> for file systems, <code class="classname">file</code> for files, and <code class="classname">dir</code> for directories. Each class has its own associated set of permissions.
+			</p></blockquote></div><p>
+			<span class="application"><strong>Proportional Bold</strong></span>
+		</p><p>
+			This denotes words or phrases encountered on a system, including application names; dialogue box text; labelled buttons; check-box and radio button labels; menu titles and sub-menu titles. For example:
+		</p><div class="blockquote"><blockquote class="blockquote"><p>
+				Choose <span class="guimenu"><strong>System &gt; Preferences &gt; Mouse</strong></span> from the main menu bar to launch <span class="application"><strong>Mouse Preferences</strong></span>. In the <span class="guilabel"><strong>Buttons</strong></span> tab, click the <span class="guilabel"><strong>Left-handed mouse</strong></span> check box and click <span class="guibutton"><strong>Close</strong></span> to switch the primary mouse button from the left to the right (making the mouse suitable for use in the left hand).
+			</p><p>
+				To insert a special character into a <span class="application"><strong>gedit</strong></span> file, choose <span class="guimenu"><strong>Applications &gt; Accessories &gt; Character Map</strong></span> from the main menu bar. Next, choose <span class="guimenu"><strong>Search &gt; Find</strong></span> from the <span class="application"><strong>Character Map</strong></span> menu bar, type the name of the character in the <span class="guilabel"><strong>Search</strong></span> field and click <span class="guibutton"><strong>Next</strong></span>. The character you sought will be highlighted in the <span class="guilabel"><strong>Character Table</strong></span>. Double-click this highlighted character to place it in the <span class="guilabel"><strong>Text to copy</strong></span> field and then click the <span class="guibutton"><strong>Copy</strong></span> button. Now switch back to your document and choose <span class="guimenu"><strong>Edit &gt; Paste</strong></span> from the <span class="application"><strong>gedit</strong></span> menu bar.
+			</p></blockquote></div><p>
+			The above text includes application names; system-wide menu names and items; application-specific menu names; and buttons and text found within a GUI interface, all presented in Proportional Bold and all distinguishable by context.
+		</p><p>
+			Note the <span class="guimenu"><strong>&gt;</strong></span> shorthand used to indicate traversal through a menu and its sub-menus. This is to avoid the difficult-to-follow 'Select <span class="guimenuitem"><strong>Mouse</strong></span> from the <span class="guimenu"><strong>Preferences</strong></span> sub-menu in the <span class="guimenu"><strong>System</strong></span> menu of the main menu bar' approach.
+		</p><p>
+			<code class="command"><em class="replaceable"><code>Mono-spaced Bold Italic</code></em></code> or <span class="application"><strong><em class="replaceable"><code>Proportional Bold Italic</code></em></strong></span>
+		</p><p>
+			Whether Mono-spaced Bold or Proportional Bold, the addition of Italics indicates replaceable or variable text. Italics denotes text you do not input literally or displayed text that changes depending on circumstance. For example:
+		</p><div class="blockquote"><blockquote class="blockquote"><p>
+				To connect to a remote machine using ssh, type <code class="command">ssh <em class="replaceable"><code>username</code></em>@<em class="replaceable"><code>domain.name</code></em></code> at a shell prompt. If the remote machine is <code class="filename">example.com</code> and your username on that machine is john, type <code class="command">ssh john@example.com</code>.
+			</p><p>
+				The <code class="command">mount -o remount <em class="replaceable"><code>file-system</code></em></code> command remounts the named file system. For example, to remount the <code class="filename">/home</code> file system, the command is <code class="command">mount -o remount /home</code>.
+			</p><p>
+				To see the version of a currently installed package, use the <code class="command">rpm -q <em class="replaceable"><code>package</code></em></code> command. It will return a result as follows: <code class="command"><em class="replaceable"><code>package-version-release</code></em></code>.
+			</p></blockquote></div><p>
+			Note the words in bold italics above  username, domain.name, file-system, package, version and release. Each word is a placeholder, either for text you enter when issuing a command or for text displayed by the system.
+		</p><p>
+			Aside from standard usage for presenting the title of a work, italics denotes the first use of a new and important term. For example:
+		</p><div class="blockquote"><blockquote class="blockquote"><p>
+				When the Apache HTTP Server accepts requests, it dispatches child processes or threads to handle them. This group of child processes or threads is known as a <em class="firstterm">server-pool</em>. Under Apache HTTP Server 2.0, the responsibility for creating and maintaining these server-pools has been abstracted to a group of modules called <em class="firstterm">Multi-Processing Modules</em> (<em class="firstterm">MPMs</em>). Unlike other modules, only one module from the MPM group can be loaded by the Apache HTTP Server.
+			</p></blockquote></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e270"/>1.2. Pull-quote Conventions</h3></div></div></div><p>
+			Two, commonly multi-line, data types are set off visually from the surrounding text.
+		</p><p>
+			Output sent to a terminal is set in <code class="computeroutput">Mono-spaced Roman</code> and presented thus:
+		</p><pre class="screen">
+books        Desktop   documentation  drafts  mss    photos   stuff  svn
+books_tests  Desktop1  downloads      images  notes  scripts  svgs
+</pre><p>
+			Source-code listings are also set in <code class="computeroutput">Mono-spaced Roman</code> but are presented and highlighted as follows:
+		</p><pre class="programlisting">
+package org.jboss.book.jca.ex1;
+
+import javax.naming.InitialContext;
+
+public class ExClient
+{
+   public static void main(String args[]) 
+       throws Exception
+   {
+      InitialContext iniCtx = new InitialContext();
+      Object         ref    = iniCtx.lookup("EchoBean");
+      EchoHome       home   = (EchoHome) ref;
+      Echo           echo   = home.create();
+
+      System.out.println("Created Echo");
+
+      System.out.println("Echo.echo('Hello') = " + echo.echo("Hello"));
+   }
+   
+}
+</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="d0e289"/>1.3. Notes and Warnings</h3></div></div></div><p>
+			Finally, we use three visual styles to draw attention to information that might otherwise be overlooked.
+		</p><div xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>
+				A note is a tip or shortcut or alternative approach to the task at hand. Ignoring a note should have no negative consequences, but you might miss out on a trick that makes your life easier.
+			</p></div><div xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>
+				Important boxes detail things that are easily missed: configuration changes that only apply to the current session, or services that need restarting before an update will apply. Ignoring Important boxes won't cause data loss but may cause irritation and frustration.
+			</p></div><div xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="warning"><h2>Warning</h2><p>
+				A Warning should not be ignored. Ignoring warnings will most likely cause data loss.
+			</p></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="d0e309"/>2. Provide feedback to the authors!</h2></div></div></div><a id="d0e312" class="indexterm"/><p> If you find a typographical error in this manual, or if you have thought of a way to make this manual better, we would love to hear from you! Please submit a report in the the <a class="ulink" href="http://code.google.com/p/mobicents/issues/list">Issue Tracker</a>, against the product <span class="application"><strong>TRITUX JAIN SLEE AMQP Resource Adaptor</strong></span>, or contact the authors.</p><p> When submitting a bug report, be sure to mention the manual's identifier: JAIN_SLEE_AMQP_RA_User_Guide</p><p> If you have a suggestion for improving the documentation, try to be as specific as possible when describing it. If you have found an error, please include the section number and some of the surrounding text so we can find it easily.</p></div></div><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="introduction"/>Chapter 1. Introduction to TRITUX JAIN SLEE AMQP Resource Adaptor</h2></div></div></div><p>
+Advanced Message Queuing Protocol (AMQP)  is an open standard for passing business messages between applications or organizations.  It connects systems, feeds business processes with the information they need and reliably transmits onward the instructions that achieve their goals. 
+</p><p>For further details please look at <a class="ulink" href="https://www.amqp.org/resources/specifications">https://www.amqp.org/resources/specifications</a></p><p>For spec details please look at  <a class="ulink" href="http://docs.oasis-open.org/amqp/core/v1.0/amqp-core-complete-v1.0.pdf">http://docs.oasis-open.org/amqp/core/v1.0/amqp-core-complete-v1.0.pdf</a></p><p>This resource adaptor provides an AMQP API for JAIN SLEE applications. </p></div><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype"/>Chapter 2. Resource Adaptor Type</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#ratype_activities">2.1. Activities</a></span></dt><dt><span class="section"><a href="#ratype_events">2.2. Events</a></span></dt><dt><span class="section"><a href="#ratype_aci_factory">2.3. Activity Context Interface Factory</a></span></dt><dt><span class="section"><a href="#ratype_ra_interface">2.4. Resource Adaptor Interface</a></span></dt><dt><span class="section"><a href="#ratype_restrictions">2.5. Restrictions</a></span></dt><dt><span class="section"><a href="#ratype_sbb_code_examples">2.6. Sbb Code Examples</a></span></dt></dl></div><p>AMQP Resource Adaptor Type is defined by TRITUX team as part of effort to standardize RA Types.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_activities"/>2.1. Activities</h2></div></div></div><p>
+		An AMQP activity object represents a set of related events in an
+		AMQP resource. This RA Type defines only one activity
+		object:
+	</p><div class="variablelist"><dl><dt><span class="term">AMQPWrapper</span></dt><dd><p>
+					All the events related to AMQP are fired on this activity.
+ 					Class name is
+					<code class="literal">
+						org.mobicents.slee.resource.amqp.AMQPWrapper
+					</code>
+				</p><p>
+					New
+					<code class="literal">AMQPWrapper</code>
+					activity objects are created via specific AMQP Service interface. Check <a class="xref" href="#ratype_ra_interface" title="2.4. Resource Adaptor Interface">Section 2.4, “Resource Adaptor Interface”</a> section for available services. 
+				</p><p>
+					Depending on amqp implementation AMQPActivity is used for sending/receiving messages and managing the server. 
+				</p></dd></dl></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_events"/>2.2. Events</h2></div></div></div><p>
+		Events represent's AMQP's common services are fired on
+		<code class="literal">AMQPTemplate</code>
+
+	</p><div xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>For proper render of this table prefixes, for entries on some columns are ommited. For prefix values, for each column, please see
+			list below: </p><div class="variablelist"><dl><dt><span class="term">Name</span></dt><dd><p>
+						org.springframework.amqp.core.Message.
+					</p></dd><dt><span class="term">Event Class</span></dt><dd><p>
+						org.mobicents.slee.resource.amqp.AMQPEvent
+					</p></dd></dl></div><p>Version for all defined events is 1.0</p><p>Vendor for all defined events is org.mobicents</p><p>
+			Spaces where introduced in
+			<code class="literal">Name</code>
+			column values, to correctly render the table. Please remove them when using copy/paste.
+		</p></div><div class="table"><a id="d0e402"/><p class="title"><b>Table 2.1. Dialog events
+		</b></p><div class="table-contents"><table summary="Dialog events&#xA;&#x9;&#x9;" width="100%" border="1"><colgroup><col/><col/><col/></colgroup><thead><tr><th>Name</th><th>Event Class</th><th>Comments</th></tr></thead><tbody><tr><td>AMQPEvent</td><td>AMQPEvent</td><td>Event representing sending and receiving messages.</td></tr></tbody></table></div></div><br class="table-break"/></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_aci_factory"/>2.3. Activity Context Interface Factory</h2></div></div></div><p>
+		The interface of the AMQP resource adaptor type specific
+		Activity Context Interface Factory is defined as follows:
+	</p><pre class="programlisting">
+package org.mobicents.slee.resource.amqp;
+
+
+import javax.slee.ActivityContextInterface;
+import javax.slee.FactoryException;
+import javax.slee.UnrecognizedActivityException;
+import javax.slee.resource.ResourceAdaptorTypeID;
+
+import org.springframework.amqp.core.AmqpTemplate;
+
+public interface AMQPActivityContextInterfaceFactory {
+	
+	public static final ResourceAdaptorTypeID RESOURCE_ADAPTOR_TYPE_ID = new ResourceAdaptorTypeID(
+            "AMQPResourceAdaptorType", "org.mobicents", "1.0");
+
+	public ActivityContextInterface getActivityContextInterface(AmqpTemplate amqpTemplate)
+			throws NullPointerException, UnrecognizedActivityException,
+			FactoryException;
+}
+	</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_ra_interface"/>2.4. Resource Adaptor Interface</h2></div></div></div><p>
+		The AMQP Resource Adaptor SBB Interface provides SBBs with access to the AMQP objects required for 
+		creating a new amqp Message Request/Response. It is defined as follows:
+	</p><pre class="programlisting">
+package org.springframework.amqp.core;
+
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.support.converter.MessageConverter;
+
+
+public interface AMQPActivity {
+
+	void send(Message message);
+	
+	void send(String routingKey, Message message);
+	
+	void send(String exchange, String routingKey, Message message);
+	
+
+
+	void convertAndSend(Object message);
+	
+	void convertAndSend(String routingKey, Object message);
+	
+	void convertAndSend(String exchange, String routingKey, Object message);
+	
+	void convertAndSend(Object message, MessagePostProcessor messagePostProcessor);
+	
+	void convertAndSend(String routingKey, Object message, MessagePostProcessor messagePostProcessor);
+	
+	void convertAndSend(String exchange, String routingKey, Object message,	MessagePostProcessor messagePostProcessor);
+	
+
+
+	Message receive();
+	
+	Message receive(String queueName);
+
+
+
+	Object receiveAndConvert();
+	
+	Object receiveAndConvert(String queueName);
+
+
+
+	&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback);
+
+	&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback);
+
+	&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback, String replyExchange, String replyRoutingKey);
+
+	&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback, String replyExchange, String replyRoutingKey);
+
+	&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback, ReplyToAddressCallback&lt;S&gt; replyToAddressCallback);
+
+	&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback, ReplyToAddressCallback&lt;S&gt; replyToAddressCallback);
+
+
+
+	Message sendAndReceive(Message message);
+
+	Message sendAndReceive(String routingKey, Message message);
+
+	Message sendAndReceive(String exchange, String routingKey, Message message);
+
+
+
+	Object convertSendAndReceive(Object message);
+
+	Object convertSendAndReceive(String routingKey, Object message);
+
+	Object convertSendAndReceive(String exchange, String routingKey, Object message);
+
+	Object convertSendAndReceive(Object message, MessagePostProcessor messagePostProcessor);
+
+	Object convertSendAndReceive(String routingKey, Object message, MessagePostProcessor messagePostProcessor);
+
+	Object convertSendAndReceive(String exchange, String routingKey, Object message, MessagePostProcessor messagePostProcessor);
+	
+}
+	
+	</pre><p>send methods for messages.</p><div class="variablelist"><dl><dt><span class="term">void send(Message message);</span></dt><dd><p>this method Send a message to a default exchange with a default routing key.</p></dd><dt><span class="term">void send(String routingKey, Message message);</span></dt><dd><p>this method Send a message to a default exchange with a specific routing key.</p></dd><dt><span class="term">void send(String exchange, String routingKey, Message message);</span></dt><dd><p>this method Send a message to a specific exchange with a specific routing key.</p></dd></dl></div><p>send methods with conversion.</p><div class="variablelist"><dl><dt><span class="term">void convertAndSend(Object message);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a default exchange with a default routing key.</p></dd><dt><span class="term">void convertAndSend(String routingKey, Object message);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a default exchange with a specific routing key.</p></dd><dt><span class="term">void convertAndSend(String exchange, String routingKey, Object message);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a specific exchange with a specific routing key.</p></dd><dt><span class="term">void convertAndSend(Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a default exchange with a default routing key.</p></dd><dt><span class="term">void convertAndSend(String routingKey, Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a default exchange with a specific routing key.</p></dd><dt><span class="term">void convertAndSend(String exchange, String routingKey, Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>this method Convert a Java object to an Amqp Message and send it to a specific exchange with a specific routing key.</p></dd></dl></div><p>receive methods for messages.</p><div class="variablelist"><dl><dt><span class="term">Message receive();</span></dt><dd><p>Receive a message if there is one from a default queue. Returns immediately, possibly with a null value.</p></dd><dt><span class="term">Message receive(String queueName);</span></dt><dd><p>Receive a message if there is one from a specific queue. Returns immediately, possibly with a null value.</p></dd></dl></div><p>receive methods with conversion.</p><div class="variablelist"><dl><dt><span class="term">Object receiveAndConvert();</span></dt><dd><p>Receive a message if there is one from a default queue and convert it to a Java object. Returns immediately, possibly with a null value.</p></dd><dt><span class="term">Object receiveAndConvert(String queueName);</span></dt><dd><p>Receive a message if there is one from a specific queue and convert it to a Java object. Returns immediately, possibly with a null value.</p></dd></dl></div><p>receive and send methods for provided callback.</p><div class="variablelist"><dl><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback);</span></dt><dd><p>Receive a message if there is one from a default queue, invoke provided ReceiveAndReplyCallback 
+				and send reply message, if the callback returns one, to the  replyTo  org.springframework.amqp.core.Address
+				from org.springframework.amqp.core.MessageProperties or to default exchange and default routingKey.</p></dd><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback);</span></dt><dd><p>Receive a message if there is one from provided queue, invoke provided ReceiveAndReplyCallback 
+				and send reply message, if the callback returns one, to the replyTo org.springframework.amqp.core.Address 
+				from org.springframework.amqp.core.MessageProperties or to default exchange and default routingKey.</p></dd><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback, String replyExchange, String replyRoutingKey);</span></dt><dd><p>Receive a message if there is one from default queue, invoke provided ReceiveAndReplyCallback
+	 			and send reply message, if the callback returns one,
+	 			to the provided exchange and routingKey.</p></dd><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback, String replyExchange, String replyRoutingKey);</span></dt><dd><p>Receive a message if there is one from provided queue, invoke provided ReceiveAndReplyCallback
+	 			and send reply message, if the callback returns one,
+	 			to the provided exchange and routingKey.</p></dd><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(ReceiveAndReplyCallback&lt;R, S&gt; callback, ReplyToAddressCallback&lt;S&gt; replyToAddressCallback);</span></dt><dd><p>Receive a message if there is one from a default queue, invoke provided ReceiveAndReplyCallback
+	 			and send reply message, if the callback returns one,
+	 			to the replyTo org.springframework.amqp.core.Address
+	 			from result of ReplyToAddressCallback.</p></dd><dt><span class="term">&lt;R, S&gt; boolean receiveAndReply(String queueName, ReceiveAndReplyCallback&lt;R, S&gt; callback, ReplyToAddressCallback&lt;S&gt; replyToAddressCallback);</span></dt><dd><p>Receive a message if there is one from provided queue, invoke provided ReceiveAndReplyCallback
+	 			and send reply message, if the callback returns one,
+	 			to the replyTo org.springframework.amqp.core.Address
+	 			from result of ReplyToAddressCallback.</p></dd></dl></div><p>send and receive methods for messages.</p><div class="variablelist"><dl><dt><span class="term">Message sendAndReceive(Message message);</span></dt><dd><p>Basic RPC pattern. Send a message to a default exchange with a default routing key and attempt to receive a
+	 			response. Implementations will normally set the reply-to header to an exclusive queue and wait up for some time
+	 			limited by a timeout.</p></dd><dt><span class="term">Message sendAndReceive(String routingKey, Message message);</span></dt><dd><p>Basic RPC pattern. Send a message to a default exchange with a specific routing key and attempt to receive a
+	 			response. Implementations will normally set the reply-to header to an exclusive queue and wait up for some time
+	 			limited by a timeout.</p></dd><dt><span class="term">Message sendAndReceive(String exchange, String routingKey, Message message);</span></dt><dd><p>Basic RPC pattern. Send a message to a specific exchange with a specific routing key and attempt to receive a
+	 			response. Implementations will normally set the reply-to header to an exclusive queue and wait up for some time
+	 			limited by a timeout.</p></dd></dl></div><p>send and receive methods with conversion.</p><div class="variablelist"><dl><dt><span class="term">Object convertSendAndReceive(Object message);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a default exchange with a default
+	 			routing key and attempt to receive a response, converting that to a Java object. Implementations will normally
+	 			set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd><dt><span class="term">Object convertSendAndReceive(String routingKey, Object message);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a default exchange with a
+	 			specific routing key and attempt to receive a response, converting that to a Java object. Implementations will
+	 			normally set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd><dt><span class="term">Object convertSendAndReceive(String exchange, String routingKey, Object message);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a specific exchange with a
+	 			specific routing key and attempt to receive a response, converting that to a Java object. Implementations will
+	 			normally set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd><dt><span class="term">Object convertSendAndReceive(Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a default exchange with a default
+	 			routing key and attempt to receive a response, converting that to a Java object. Implementations will normally
+	 			set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd><dt><span class="term">Object convertSendAndReceive(String routingKey, Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a default exchange with a
+	 			specific routing key and attempt to receive a response, converting that to a Java object. Implementations will
+	 			normally set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd><dt><span class="term">Object convertSendAndReceive(String exchange, String routingKey, Object message, MessagePostProcessor messagePostProcessor);</span></dt><dd><p>Basic RPC pattern with conversion. Send a Java object converted to a message to a specific exchange with a
+	 			specific routing key and attempt to receive a response, converting that to a Java object. Implementations will
+	 			normally set the reply-to header to an exclusive queue and wait up for some time limited by a timeout.</p></dd></dl></div><div xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="note"><h2>Note</h2><p>we use spring amqp stack services to support all implemented services.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_restrictions"/>2.5. Restrictions</h2></div></div></div><p>
+		The resource adaptor implementation should prevent SBBs from
+		adding themselves as AMQP listeners, or changing the AMQP
+		network configuration. Any attempt to do so should be rejected
+		by throwing a SecurityException.
+	</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ratype_sbb_code_examples"/>2.6. Sbb Code Examples</h2></div></div></div><p>The following code shows complete flow of application receiving the AMQP Message request. Application sends back an AMQP mesasge and finally application closes the AMQP connection</p><pre class="programlisting">
+public abstract class AmqpExampleSbb implements Sbb {
+	
+	private Tracer tracer;
+	
+	
+	public void onAMQPEvent(org.mobicents.slee.resources.amqp.AMQPEvent event, 
+			ActivityContextInterface aci/*, EventContext eventContext*/) {
+		
+		
+			// Get the amqpMessage
+			Massage received = event.getAmqpMessage();  
+			
+			tracer.info(  "AMQP Event received ");
+			
+			Message response = new Message("this is a reply".getBytes(), null);
+			
+		    // Get the activity object from the ACI.
+		    AMQPActivity amqp = ()AMQPActivity)aci.createcreateAMQPActivity();
+		    
+		    //reply
+		    amqp.basicPublish(response);
+		    
+		    aci.detach(getSbbLocalObject());
+		    tracer.info("Activity detached." );
+		
+	}	
+	
+	
+	
+	// TODO: Perform further operations if required in these methods.
+	public void setSbbContext(SbbContext context) { 
+		
+		this.sbbContext = (SbbContextExt) context; 
+		tracer = context.getTracer(this.getClass().getSimpleName());
+		
+	}
+	public void unsetSbbContext() { this.sbbContext = null; }
+
+	// TODO: Implement the lifecycle methods if required
+	public void sbbCreate() throws javax.slee.CreateException {}
+	public void sbbPostCreate() throws javax.slee.CreateException {}
+	public void sbbActivate() {}
+	public void sbbPassivate() {}
+	public void sbbRemove() {}
+	public void sbbLoad() {}
+	public void sbbStore() {}
+	public void sbbExceptionThrown(Exception exception, Object event, ActivityContextInterface activity) {}
+	public void sbbRolledBack(RolledBackContext context) {}
+	
+
+	
+	/**
+	 * Convenience method to retrieve the SbbContext object stored in setSbbContext.
+	 * 
+	 * TODO: If your SBB doesn't require the SbbContext object you may remove this 
+	 * method, the sbbContext variable and the variable assignment in setSbbContext().
+	 *
+	 * @return this SBB's SbbContext object
+	 */
+	
+	protected SbbContextExt getSbbContext() {
+		return sbbContext;
+	}
+
+	private SbbContextExt sbbContext; // This SBB's SbbContext
+
+}
+		</pre></div></div><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ra"/>Chapter 3. Resource Adaptor Implementation</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#ra_configuration">3.1. Configuration</a></span></dt><dt><span class="section"><a href="#ra_default_ra_entities">3.2. Default Resource Adaptor Entities</a></span></dt><dt><span class="section"><a href="#ra_traces_and_alarms">3.3. Traces and Alarms</a></span></dt><dd><dl><dt><span class="section"><a href="#ra_tracers">3.3.1. Tracers</a></span></dt><dt><span class="section"><a href="#ra_alarms">3.3.2. Alarms</a></span></dt></dl></dd></dl></div><p>The RA implementation uses the Spring AMQP stack, this stack uses the 
+	rabbit-mq implementation. Other implementation can be added depending on spring-amqp project</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ra_configuration"/>3.1. Configuration</h2></div></div></div><p>The Resource Adaptor supports configuration only at Resource Adaptor Entity creation time. It supports following properties:</p><div class="table"><a id="d0e655"/><p class="title"><b>Table 3.1. Resource Adaptor's Configuration Properties - amqp-default-ra.properties</b></p><div class="table-contents"><table summary="Resource Adaptor's Configuration Properties - amqp-default-ra.properties" width="100%" border="1"><colgroup><col/><col/><col/><col/></colgroup><thead><tr><th>Property Name</th><th>Description</th><th>Property Type</th><th>Default Value</th></tr></thead><tbody><tr><td>amqpHost</td><td>Amqp server Host</td><td>java.lang.String</td><td>localhost</td></tr><tr><td>amqpPort</td><td>Amqp server Port</td><td>java.lang.Integer</td><td>5672</td></tr><tr><td>amqpQueueName</td><td>the name of the queue</td><td>java.lang.String</td><td>myQueue</td></tr><tr><td>amqpExchangeName</td><td>the name of the exchange</td><td>java.lang.String</td><td>myExchange</td></tr></tbody></table></div></div><br class="table-break"/><div xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="important"><h2>Important</h2><p>JAIN SLEE 1.1 Specification requires values set for properties without a default value, which means the configuration for those properties are mandatory, otherwise the Resource Adaptor Entity creation will fail!</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ra_default_ra_entities"/>3.2. Default Resource Adaptor Entities</h2></div></div></div><p>There is a single Resource Adaptor Entity created when deploying the Resource Adaptor, named <code class="literal">AMQPRA</code>. The <code class="literal">AMQPRA</code> entity uses the default Resource Adaptor configuration, specified in <a class="xref" href="#ra_configuration" title="3.1. Configuration">Section 3.1, “Configuration”</a>.</p><p>The <code class="literal">AMQPRA</code> entity is also bound to Resource Adaptor Link Name <code class="literal">AMQPRA</code>, to use it in an Sbb add the following XML to its descriptor:</p><pre xmlns="" xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="XML"><!-- XML : generated by JHighlight v1.0 (http://jhighlight.dev.java.net) -->
+<span class="xml_plain"></span><br />
+<span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource-adaptor-type-binding</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource-adaptor-type-ref</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource-adaptor-type-name</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AMQPResourceAdaptorType</span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">resource-adaptor-type-name</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource-adaptor-type-vendor</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;org.mobicents</span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">resource-adaptor-type-vendor</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource-adaptor-type-version</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.0</span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">resource-adaptor-type-version</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">resource-adaptor-type-ref</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">activity-context-interface-factory-name</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slee/resources/amqp/1.0/acifactory</span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">activity-context-interface-factory-name</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource-adaptor-entity-binding</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource-adaptor-object-name</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slee/resources/amqp/1.0/provider</span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">resource-adaptor-object-name</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;</span><span class="xml_tag_name">resource-adaptor-entity-link</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AMQPPRA</span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">resource-adaptor-entity-link</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">resource-adaptor-entity-binding</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="xml_tag_symbols">&lt;/</span><span class="xml_tag_name">resource-adaptor-type-binding</span><span class="xml_tag_symbols">&gt;</span><span class="xml_plain"></span><br />
+<span class="xml_plain"></span><br />
+<span class="xml_plain"></span><br />
+<span class="xml_plain">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+</pre></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="ra_traces_and_alarms"/>3.3. Traces and Alarms</h2></div></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="ra_tracers"/>3.3.1. Tracers</h3></div></div></div><p>Each Resource Adaptor Entity uses a single JAIN SLEE 1.1 Tracer, named <code class="literal">AMQPResourceAdaptor</code>. The related Log4j Logger category, which can be used to change the Tracer level from Log4j configuration, is <code class="literal">javax.slee.RAEntityNotification[entity=AMQPRA]</code></p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="ra_alarms"/>3.3.2. Alarms</h3></div></div></div><p>No alarms are set by this Resource Adaptor.</p></div></div></div><div class="chapter" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="setup"/>Chapter 4. Setup</h2></div></div></div><div class="toc"><dl><dt><span class="section"><a href="#preinstall_requirements_and_prerequisites">4.1. Pre-Install Requirements and Prerequisites</a></span></dt><dd><dl><dt><span class="section"><a href="#hardware_requirements">4.1.1. Hardware Requirements</a></span></dt><dt><span class="section"><a href="#software_prerequisites">4.1.2. Software Prerequisites</a></span></dt></dl></dd><dt><span class="section"><a href="#source_code">4.2. TRITUX JAIN SLEE AMQP Resource Adaptor Source Code</a></span></dt><dd><dl><dt><span class="section"><a href="#release_source_building">4.2.1. Release Source Code Building</a></span></dt><dt><span class="section"><a href="#trunk_source_building">4.2.2. Development Trunk Source Building</a></span></dt></dl></dd><dt><span class="section"><a href="#install">4.3. Installing TRITUX JAIN SLEE AMQP Resource Adaptor</a></span></dt><dt><span class="section"><a href="#uninstall">4.4. Uninstalling TRITUX JAIN SLEE AMQP Resource Adaptor</a></span></dt></dl></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="preinstall_requirements_and_prerequisites"/>4.1. Pre-Install Requirements and Prerequisites</h2></div></div></div><p>Ensure that the following requirements have been met before continuing with the install.</p><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="hardware_requirements"/>4.1.1. Hardware Requirements</h3></div></div></div><p>The Resource Adaptor hardware's main concern is RAM memory and Java Heap size, the more the better. </p><p>Of course, memory is only needed to store the Resource Adaptor state, yet no particular CPU is a real requirement to use the RA.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="software_prerequisites"/>4.1.2. Software Prerequisites</h3></div></div></div><p>The RA requires TRITUX JAIN SLEE properly set.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="source_code"/>4.2. TRITUX JAIN SLEE AMQP Resource Adaptor Source Code</h2></div></div></div><p/><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="release_source_building"/>4.2.1. Release Source Code Building</h3></div></div></div><div xmlns:rf="java:org.jboss.highlight.XhtmlRendererFactory" class="procedure"><ol class="1"><li><p class="title"><b>Downloading the source code</b></p><div class="important"><h2>Important</h2><p>Subversion is used to manage its source code. Instructions for using Subversion, including install, can be found at <a class="ulink" href="http://svnbook.red-bean.com">http://svnbook.red-bean.com</a></p></div><p>Use SVN to checkout a specific release source, the base URL is http://mobicents.googlecode.com/svn/tags/servers/jain-slee/2.x.y/resources/AMQP, then add the specific release version, lets consider 1.0.</p><pre class="programlisting">[usr]$ svn co http://mobicents.googlecode.com/svn/tags/servers/jain-slee/2.x.y/resources/AMQP/1.0 slee-ra-AMQP-1.0</pre></li><li><p class="title"><b>Building the source code</b></p><div class="important"><h2>Important</h2><p>Maven 2.0.9 (or higher) is used to build the release. Instructions for using Maven2, including install, can be found at <a class="ulink" href="http://maven.apache.org">http://maven.apache.org</a></p></div><p>Use Maven to build the deployable unit binary.</p><pre class="programlisting">
+[usr]$ cd slee-ra-AMQP-1.0
+[usr]$ mvn install
+				    </pre><p>Once the process finishes you should have the <code class="literal">deployable-unit</code> jar file in the <code class="filename">target</code> directory, if TRITUX JAIN SLEE is installed and environment variable JBOSS_HOME is pointing to its underlying JBoss Application Server directory, then the deployable unit jar will also be deployed in the container.</p></li></ol></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h3 class="title"><a id="trunk_source_building"/>4.2.2. Development Trunk Source Building</h3></div></div></div><p>Similar process as for <a class="xref" href="#release_source_building" title="4.2.1. Release Source Code Building">Section 4.2.1, “Release Source Code Building”</a>, the only change is the SVN source code URL, which is http://mobicents.googlecode.com/svn/trunk/servers/jain-slee/resources/AMQP.</p></div></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="install"/>4.3. Installing TRITUX JAIN SLEE AMQP Resource Adaptor</h2></div></div></div><p>To install the Resource Adaptor simply execute provided ant script <code class="filename">build.xml</code> default target:</p><pre class="programlisting">[usr]$ ant</pre><p>The script will copy the RA deployable unit jar to the <code class="literal">default</code> TRITUX JAIN SLEE server profile deploy directory, to deploy to another server profile use the argument <code class="literal">-Dnode=</code>.</p></div><div class="section" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="uninstall"/>4.4. Uninstalling TRITUX JAIN SLEE AMQP Resource Adaptor</h2></div></div></div><p>To uninstall the Resource Adaptor simply execute provided ant script <code class="filename">build.xml</code> <code class="literal">undeploy</code> target:</p><pre class="programlisting">[usr]$ ant undeploy</pre><p>The script will delete the RA deployable unit jar from the <code class="literal">default</code> TRITUX JAIN SLEE server profile deploy directory, to undeploy from another server profile use the argument <code class="literal">-Dnode=</code>.</p></div></div><div class="appendix" lang="en-US"><div class="titlepage"><div><div><h2 class="title"><a id="revision_history"/>Appendix A. Revision History</h2></div></div></div><p>
+		<div class="revhistory"><table border="0" width="100%" summary="Revision history"><tr><th align="left" valign="top" colspan="3"><b>Revision History</b></th></tr><tr><td align="left">Revision 1.0</td><td align="left">Mon Mar 02 2015</td><td align="left"><span class="author"><span class="firstname">Akrem</span> <span class="surname">Benmarzouk</span></span>, <span class="author"><span class="firstname">Helmi</span> <span class="surname">Benabdallah</span></span></td></tr><tr><td align="left" colspan="3">
+					<table class="simplelist" border="0" summary="Simple list"><tr><td>Creation of the TRITUX JAIN SLEE AMQP RA User Guide.</td></tr></table>
+				</td></tr></table></div>
+	</p></div><div class="index"><div class="titlepage"><div><div><h2 class="title"><a id="d0e886"/>Index</h2></div></div></div><div class="index"><div class="indexdiv"><h3>F</h3><dl><dt>feedback, <a class="indexterm" href="#d0e309">Provide feedback to the authors!</a></dt></dl></div></div></div></div></body></html>
