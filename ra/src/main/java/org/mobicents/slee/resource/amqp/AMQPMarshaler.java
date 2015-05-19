@@ -19,7 +19,7 @@ public class AMQPMarshaler implements Marshaler {
 		//       can be used by the SLEE to help size appropriately any 
 		//       internal buffers used to store the marshaled form of an Event.
 
-		throw new UnsupportedOperationException();
+		return AMQPEventImpl.getEstimatedEventSize();
 	}
 
 	public ByteBuffer getEventBuffer(FireableEventType eventType, Object event) {
@@ -49,7 +49,8 @@ public class AMQPMarshaler implements Marshaler {
 		//       specified by the out argument. The eventType argument 
 		//       identifies the event type of the Event object. 
 
-		throw new UnsupportedOperationException();
+//		throw new UnsupportedOperationException();
+		((AMQPEventImpl)event).toStream(out); 
 	}
 
 	public Object unmarshalEvent(FireableEventType eventType, DataInput in) throws IOException {
@@ -60,7 +61,8 @@ public class AMQPMarshaler implements Marshaler {
 		//       class name of the event type and a class loader that can be 
 		//       used to load the event class if required. 
 
-		throw new UnsupportedOperationException();
+		return new AMQPEventImpl(in);
+//		throw new UnsupportedOperationException();		
 	}
 	
 	// Activity Handles -------------------------------------------------------	
@@ -72,7 +74,7 @@ public class AMQPMarshaler implements Marshaler {
 		//       any internal buffers used to store the marshaled form of an
 		//       Activity Handle.
 
-		throw new UnsupportedOperationException();
+		return AMQPID.getEstimatedHandleSize();
 	}
 
 	public void marshalHandle(ActivityHandle handle, DataOutput out) throws IOException {
@@ -81,7 +83,7 @@ public class AMQPMarshaler implements Marshaler {
 		//       ActivityHandle object specified by the handle argument using
 		//       the DataOutput object specified by the out argument.
 
-		throw new UnsupportedOperationException();
+		((AMQPID) handle).toStream(out);
 	}
 
 	public ActivityHandle unmarshalHandle(DataInput in) throws IOException {
@@ -91,7 +93,7 @@ public class AMQPMarshaler implements Marshaler {
 		//       DataInput object specified by the in argument and reconstruct
 		//       the ActivityHandle object.
 
-		throw new UnsupportedOperationException();
+		return new AMQPID(in);
 	}
 
 }

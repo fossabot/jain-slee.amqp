@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.slee.resource.ActivityHandle;
 
-public class ConsumerID implements ActivityHandle {
+public class AMQPID implements ActivityHandle {
 	private final int seq;
 
 	/**
@@ -15,7 +15,7 @@ public class ConsumerID implements ActivityHandle {
 	 * @param in
 	 * @throws IOException
 	 */
-	ConsumerID(DataInput in) throws IOException {
+	AMQPID(DataInput in) throws IOException {
 		this.seq = in.readInt();
 	}
 
@@ -23,7 +23,7 @@ public class ConsumerID implements ActivityHandle {
      * Construct ID from sequence number
      * @param seq
      */
-	public ConsumerID(int seq) {
+	public AMQPID(int seq) {
 		
 		this.seq = seq;
 	}
@@ -62,8 +62,8 @@ public class ConsumerID implements ActivityHandle {
 			return false;
 		if (o == this)
 			return true;
-		if (o instanceof ConsumerID) {
-			ConsumerID id = (ConsumerID) o;
+		if (o instanceof AMQPID) {
+			AMQPID id = (AMQPID) o;
 			return (seq == id.seq);
 		}
 		return false;

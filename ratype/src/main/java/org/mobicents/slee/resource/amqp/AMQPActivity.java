@@ -40,7 +40,10 @@ public interface AMQPActivity {
      * service using this activity
      * has to explicitly call endActivity() method to end the Activity.
      */
-    public void endActivity();
+    public void close();
+    
+    
+    public boolean isOpen();
     
     
     // send methods for messages

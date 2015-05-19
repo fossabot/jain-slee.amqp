@@ -9,13 +9,10 @@ import javax.slee.facilities.*;
 import javax.slee.resource.*;
 
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageListener;
-//import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.Connection;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.util.ErrorHandler;
 
 /**
  * 
@@ -24,18 +21,19 @@ import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
  * 
  */
 
-//@Configuration
-//@EnableRabbit
 public class AMQPResourceAdaptor implements ResourceAdaptor {
 
+	
+	// Config Property values
 	private String amqpHost;
 	private Integer amqpPort;
-	private String amqpQeueName;
-	private String amqpExchangeName;
-	SimpleMessageListenerContainer container;
+	
+	
+	
+	AMQPListener amqpListener;
 	private static final AtomicInteger instance = new AtomicInteger();
 
-	private Map<ConsumerID, AMQPWrapper> connectionMap;
+	private Map<AMQPID, AMQPHandler> connectionMap;
 	private FireableEventType amqpEventID;
 	
 
@@ -84,7 +82,7 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 	 * ActivityFlags and EventFlags class when starting Activities or firing
 	 * Events.
 	 */
-	private Marshaler marshaler = new AMQPMarshaler();
+	private Marshaler marshaler;
 
 	/**
 	 * for all events we are interested in knowing when the event failed to be processed
@@ -136,28 +134,26 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 	}
 	
 	public void raConfigure(ConfigProperties properties) {
-
-		this.amqpHost = (String) properties.getProperty("amqpHost").getValue();
-
-		this.amqpPort = (Integer) properties.getProperty("amqpPort").getValue();
-
-		this.amqpQeueName = (String) properties.getProperty("amqpQeueName").getValue();
-
-		this.amqpExchangeName = (String) properties.getProperty("amqpExchangeName").getValue();
 		
-		connectionMap = new HashMap<ConsumerID, AMQPWrapper>();
+		marshaler = new AMQPMarshaler();
+		connectionMap = new HashMap<AMQPID, AMQPHandler>();
 		
-		EventTypeID amqpEventType = new EventTypeID("AMQPEvent",
-				"org.mobicents", "1.0");
 		
+		// Get configuration property
+		amqpHost = (String) properties.getProperty("amqpHost").getValue();
+		amqpPort = (Integer) properties.getProperty("amqpPort").getValue();
+//		amqpQeueName = (String) properties.getProperty("amqpQeueName").getValue();
+//		amqpExchangeName = (String) properties.getProperty("amqpExchangeName").getValue();
+		
+		
+		
+		EventTypeID amqpEventType = new EventTypeID("AMQPEvent", "org.mobicents", "1.0");
 		try {
 			amqpEventID = raContext.getEventLookupFacility().getFireableEventType(amqpEventType);
 			tracer.info("created amqpEventID " + amqpEventID);
-			
 			setState(STATE_INACTIVE);
 		} catch (UnrecognizedEventException uee) {
-			tracer.severe("No event ID found for " + amqpEventType
-					+ ", cannot initialise");
+			tracer.severe("No event ID found for " + amqpEventType	+ ", cannot initialise");
 		}
 
 		if (tracer.isFineEnabled()) {
@@ -183,30 +179,23 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 		// adaptor to interact with the underlying resource.
 		// allocate any system resources required to allow the resource
 		// adaptor to interact with the underlying resource.
+		
 		tracer.fine("Amqp Resource Adaptor raActive.");
 		if (getState() != STATE_INACTIVE) {
 			tracer.warning("Initialisation failed, not starting");
 			return;
 		}
 
-		CachingConnectionFactory connectionFactory = new CachingConnectionFactory(amqpHost, amqpPort);
-
-		container = new SimpleMessageListenerContainer(connectionFactory);
+		try{
+			
+			amqpListener = new AMQPListener (tracer, this, amqpHost, amqpPort);
+			amqpListener.start();
+			setState(STATE_ACTIVE);
+		}
+		catch (Exception e) {
+            tracer.warning("Unable to activate RA entity", e);
+        }
 		
-		 Object listener = new Object() {
-		        public void handleMessage(String foo) {
-		            tracer.info(foo);
-		        }
-		    };
-		    
-		MessageListenerAdapter adapter = new MessageListenerAdapter(listener);
-		container.setMessageListener(adapter);
-		container.setQueueNames(amqpQeueName);
-
-		container.start();
-		
-		
-		setState(STATE_ACTIVE);
 
 		if (tracer.isFineEnabled()) {
 			tracer.fine("Amqp Resource Adaptor entity active.");
@@ -224,28 +213,26 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 		// Shutdown the listener so that no new connections can be created
 		tracer.info("stopping - no new activities will be created");
 		// amqpListener.close();
+		amqpListener.close();
 
 		if (tracer.isFineEnabled()) {
 			tracer.fine("Amqp Resource Adaptor entity stopping.");
 		}
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				System.out.println("Shutting down BigOperationWorker");
-				container.shutdown();
-			}
-		});
+//		Runtime.getRuntime().addShutdownHook(new Thread() {
+//			@Override
+//			public void run() {
+//				System.out.println("Shutting down BigOperationWorker");
+//				container.shutdown();
+//			}
+//		});
 	}
 
 	public void raInactive() {
 		//deallocate any system resources allocated to allow the resource
 		//adaptor to interact with the underlying resource.
+		amqpListener.close();
 		connectionMap.clear();
-
-		if (tracer.isFineEnabled()) {
-			tracer.fine("Amqp Resource Adaptor entity inactive.");
-		}
-		container = null;
+		
 		if (tracer.isFineEnabled()) {
 			tracer.fine("AMQP Resource Adaptor entity inactive.");
 		}	   
@@ -270,7 +257,10 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 	}
 
 	public void raConfigurationUpdate(ConfigProperties properties) {
-		raConfigure(properties);		
+		amqpHost = (String) properties.getProperty("amqpHost").getValue();
+		amqpPort = (Integer) properties.getProperty("amqpPort").getValue();
+//		amqpQeueName = (String) properties.getProperty("amqpQeueName").getValue();
+//		amqpExchangeName = (String) properties.getProperty("amqpExchangeName").getValue();		
 	}
 
 	// Interface Access -------------------------------------------------------
@@ -331,7 +321,7 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 				+ activity.toString());
 
 		synchronized (connectionMap) {
-			return ((AMQPWrapper) activity).getConsumerID();
+			return ((AMQPHandler) activity).getAmqpID();
 		}
 	}
 
@@ -359,7 +349,17 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 
 	public void eventProcessingFailed(ActivityHandle handle, FireableEventType eventType, Object event, Address address, ReceivableService service, int flags, FailureReason reason) {
 		// used to inform the resource adaptor object that the specified Event 
-		// could not be processed successfully by the SLEE.
+		// could not be processed successfully by the SLEE..
+
+				tracer.fine("eventProcessingFailed: ah=" + handle + ", eventType="
+						+ eventType + ", event=" + event + ", flags=" + flags
+						+ ", reason=" + reason);
+				AMQPHandler amqp = (AMQPHandler) getActivity(handle);
+				try {
+					amqp.convertAndSend("RA: Event failed!");
+				} catch (Exception e) {
+					tracer.warning("error sending message", e);
+				}
 	}
 
 	public void eventUnreferenced(ActivityHandle handle, FireableEventType eventType, Object event, Address address, ReceivableService service, int flags) {
@@ -385,18 +385,20 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 	
 	// AMQP Resource Adaptor specific logic.
 	
-	public void publishEvent(AMQPWrapper amqpWrapper, Message message) {
+	public void publishEvent(AMQPHandler amqpHandler, String message) {
 		// TODO Auto-generated method stub
 		try {
 			tracer.info("data received, firing message event");
-			AMQPEvent event = new AMQPEvent(message);
+			AMQPEventImpl event = new AMQPEventImpl(message);
 			int flags = EventFlags.REQUEST_PROCESSING_SUCCESSFUL_CALLBACK
 					| EventFlags.REQUEST_PROCESSING_FAILED_CALLBACK;
-			sleeEndpoint.fireEvent(amqpWrapper.getConsumerID(),
+			
+			
+			sleeEndpoint.fireEvent(amqpHandler.getAmqpID(),
 					amqpEventID, event, null, null, flags);
 
 			tracer.info("AMQP  Resource Adaptor fire events "
-					+ amqpWrapper.getConsumerID().toString());
+					+ amqpHandler.getAmqpID().toString());
 		} catch (Exception e) {
 			tracer.warning("Error firing event to SLEE", e);
 		}
@@ -413,7 +415,7 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 		return this.tracer;
 	}
 
-	public void connectionClosed(ConsumerID id) {
+	public void connectionClosed(AMQPID id) {
 		tracer.info("connection closed, ending activity");
 		// Submit an activity end event - but only if we are not already deactivated
 		if (getState() == STATE_ACTIVE) {
@@ -428,15 +430,15 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 		
 	}
 
-	public void connectionOpened(AMQPWrapper amqpWrapper) {
+	public void connectionOpened(AMQPHandler amqpHandler) {
 		synchronized (connectionMap) {
-			connectionMap.put(amqpWrapper.getConsumerID(), amqpWrapper);
+			connectionMap.put(amqpHandler.getAmqpID(), amqpHandler);
 		}
 		tracer.info("connection opened, starting activity");
 		// Tell the SLEE about the new activity
 		try {
 			sleeEndpoint
-			.startActivity(amqpWrapper.getConsumerID(), amqpWrapper);
+			.startActivity(amqpHandler.getAmqpID(), amqpHandler);
 		} catch (StartActivityException e) {
 			tracer.warning("Failed to start the activity: " + e.getMessage(), e);
 		}

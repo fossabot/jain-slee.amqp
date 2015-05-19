@@ -2,6 +2,8 @@ package org.mobicents.slee.resource.amqp;
 
 import java.util.Properties;
 
+import javax.slee.facilities.Tracer;
+
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -12,43 +14,112 @@ import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.ReceiveAndReplyCallback;
 import org.springframework.amqp.core.ReplyToAddressCallback;
-
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 
-public class AMQPWrapper implements AMQPActivity{
-	
+public class AMQPHandler extends Thread implements AMQPActivity{
+
+    private boolean closed = false;
+    
 	private final AMQPResourceAdaptor ra;
-	private AmqpTemplate amqpTemplate;
-	private AmqpAdmin amqpAdmin;
-	private final ConsumerID id;
+	private final AMQPID id;
+	private final Tracer tracer;
+	
+	private final SimpleMessageListenerContainer container;
+	private final AmqpTemplate amqpTemplate;
+	private final AmqpAdmin amqpAdmin;
+	
 
-	public AMQPWrapper(ConsumerID id, AMQPResourceAdaptor ra,
-			String amqpHost, String amqpQueueName) {
+	public AMQPHandler(Tracer tracer, AMQPResourceAdaptor ra, AMQPID id,
+			CachingConnectionFactory cf, SimpleMessageListenerContainer container) {
 		
+		super( "AMQPHandler thread for " + id );
 		
-		this.id = id;
-		this.ra = ra;
-		if(ra!=null)
-			ra.connectionOpened(this);
+		this.tracer = tracer;
+        this.ra = ra;
+        this.id = id;
+       
+        this.container = container;
+//        this.connection = connection;
+//        this.channel = channel;
+        this.amqpAdmin = new RabbitAdmin(cf);
+        this.amqpTemplate = new RabbitTemplate(cf);
+        
+        tracer.info( "New amqp connection to " + cf.getHost() );
+        
+     // Inform the RA of this new connection
+        ra.connectionOpened( this );
 		
-		CachingConnectionFactory connectionFactory = new CachingConnectionFactory(amqpHost);
-		connectionFactory.setUsername("guest");
-		connectionFactory.setPassword("guest");
-		connectionFactory.setConnectionCacheSize(25);
-		amqpAdmin =new RabbitAdmin(connectionFactory);
-		amqpTemplate = new RabbitTemplate(connectionFactory);
-		//The routing key is set to the name of the queue by the broker for the default exchange.
-		((RabbitTemplate) amqpTemplate).setRoutingKey(amqpQueueName);
-		//Where we will synchronously receive messages from
-		((RabbitTemplate) amqpTemplate).setQueue(amqpQueueName);
 	}
 
+	// Called from SBB
+	@Override
+	public void close(){
+		shutdown();
+	}
+
+	 
+	// Called from SBB
+	@Override
+	public boolean isOpen(){
+		
+		return container.isRunning();
+	}
 	
-	public ConsumerID getConsumerID() {
-	return id;
-}
+	/**
+     * {@inheritDoc}
+     */
+	@Override
+	public void run() {
+		tracer.info("running new container ID : " + this.id);
+
+			try {
+				final AMQPHandler handler = this;
+				Object listener = new Object() {
+			        public void handleMessage(String foo) {
+			        	tracer.fine( "received message: " + foo );
+		                ra.publishEvent(handler, foo);
+			        }
+			    };
+			    MessageListenerAdapter adapter = new MessageListenerAdapter(listener);
+			    
+			    container.setMessageListener(adapter);
+			    container.setQueueNames("myQueue");
+			    container.start();
+				
+			} catch (Exception e) {
+//				tracer.warning( "exception during read()", e );
+				tracer.warning( "socket closed" );
+//                break;
+			}
+//		}
+		
+//		shutdown();
+	}
+	    
+	public AMQPID getAmqpID() {
+		return id;
+	}
+	
+	
+	private synchronized void shutdown(){
+		
+		if (!closed) {
+            closed = true;
+            tracer.fine( "shutting down..." );
+			try {
+//				channel.close();
+//				connection.close();
+				container.stop();
+				ra.connectionClosed( id );
+			} catch (Exception e) {
+				tracer.warning( "error while shutting down", e );
+			}
+		}
+	}
 
 	/**
 	 *
@@ -445,16 +516,6 @@ public class AMQPWrapper implements AMQPActivity{
 	@Override
 	public void removeBinding(Binding arg0) {
 		amqpAdmin.removeBinding(arg0);
-	}
-
-	/**
-	 *
-	 *{@inheritDoc}
-	 *
-	 */
-	@Override
-	public void endActivity() {
-		ra.connectionClosed(this.id);
 	}
 
 
