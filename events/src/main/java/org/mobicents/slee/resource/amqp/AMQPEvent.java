@@ -1,13 +1,9 @@
 package org.mobicents.slee.resource.amqp;
 
-
-
-import org.springframework.amqp.core.Message;
-
 /**
  * <p>
- * The AMQP protocol is based on sending and receiving {@link Message} to/from
- * an AMQP Server.
+ * The AMQP protocol is based on sending and receiving {@link String} 
+ * JSON message to/from an AMQP Server.
  * </p>
  * <p>
  * We have defined one Event for the AMQPRA called {@link AMQPEvent}

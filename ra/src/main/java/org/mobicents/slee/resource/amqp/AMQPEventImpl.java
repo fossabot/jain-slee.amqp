@@ -16,51 +16,50 @@ import org.springframework.amqp.support.converter.SerializerMessageConverter;
 
 public class AMQPEventImpl implements AMQPEvent, Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6962304839868584949L;
 	private final String messageReceived;
-	private static final long serialVersionUID = 1L;
 	
 	public AMQPEventImpl(String messageReceived) {
 		super();
 		this.messageReceived = messageReceived;
 	}
 	
-	public AMQPEventImpl(DataInput in) throws IOException {
-		ObjectInputStream ois =new ObjectInputStream((InputStream) in );
-		SerializerMessageConverter converter = new SerializerMessageConverter();
-				Object o = null;
-		try {
-			o =  ois.readObject();
-			
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		}
-		messageReceived = new String ((converter.toMessage(o, new MessageProperties())).getBody());
-	}
+//	public AMQPEventImpl(DataInput in) throws IOException {
+//		ObjectInputStream ois =new ObjectInputStream((InputStream) in );
+//		SerializerMessageConverter converter = new SerializerMessageConverter();
+//				Object o = null;
+//		try {
+//			o =  ois.readObject();
+//			
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			
+//		}
+//		messageReceived = converter.toMessage(o, new MessageProperties());
+//	}
 
 	@Override
 	public String getAmqpMessage() {
 		return messageReceived;
 	}
 
-	public static int getEstimatedEventSize() {
-		// TODO Auto-generated method stub
-		return 8;
-	}
+//	public static int getEstimatedEventSize() {
+//		// TODO Auto-generated method stub
+//		return 8;
+//	}
 
-	public void toStream(DataOutput out) throws MessageConversionException, IOException {
-		// TODO Auto-generated method stub
-		ObjectOutputStream oos =new ObjectOutputStream( (OutputStream) out );
-		SerializerMessageConverter converter = new SerializerMessageConverter();
-		oos.writeObject(
-				converter.fromMessage(
-						new Message(
-								messageReceived.getBytes(), 
-								new MessageProperties()
-								)
-						)
-				);
-	}
+//	public void toStream(DataOutput out) throws MessageConversionException, IOException {
+//		// TODO Auto-generated method stub
+//		ObjectOutputStream oos =new ObjectOutputStream( (OutputStream) out );
+//		SerializerMessageConverter converter = new SerializerMessageConverter();
+//		oos.writeObject(
+//				converter.fromMessage(messageReceived)
+//						
+//				);
+//	}
 
 }

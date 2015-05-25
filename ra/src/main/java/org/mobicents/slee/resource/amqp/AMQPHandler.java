@@ -20,6 +20,9 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 
+import com.rabbitmq.tools.json.JSONReader;
+import com.rabbitmq.tools.json.JSONUtil;
+
 public class AMQPHandler extends Thread implements AMQPActivity{
 
     private boolean closed = false;
@@ -43,8 +46,6 @@ public class AMQPHandler extends Thread implements AMQPActivity{
         this.id = id;
        
         this.container = container;
-//        this.connection = connection;
-//        this.channel = channel;
         this.amqpAdmin = new RabbitAdmin(cf);
         this.amqpTemplate = new RabbitTemplate(cf);
         
@@ -80,10 +81,18 @@ public class AMQPHandler extends Thread implements AMQPActivity{
 				final AMQPHandler handler = this;
 				Object listener = new Object() {
 			        public void handleMessage(String foo) {
-			        	tracer.fine( "received message: " + foo );
+			        	//check if it's a json string
+			        	try{
+			        	JSONReader jr = new JSONReader();
+			        	jr.read(foo);
 		                ra.publishEvent(handler, foo);
+			        	}catch(IllegalStateException e){
+			        		tracer.info("this is not valid json string and will be ignored");
+			        	}
 			        }
 			    };
+			    
+			    
 			    MessageListenerAdapter adapter = new MessageListenerAdapter(listener);
 			    
 			    container.setMessageListener(adapter);
