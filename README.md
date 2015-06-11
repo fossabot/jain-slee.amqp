@@ -11,3 +11,5 @@ This resource adaptor provides an AMQP API for JAIN SLEE applications.
 ## License
 
 A short snippet describing the license (MIT, Apache, etc.)
+=======
+# jain-slee.amqp
