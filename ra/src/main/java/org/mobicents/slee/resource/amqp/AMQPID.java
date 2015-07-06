@@ -7,7 +7,7 @@ import java.io.IOException;
 import javax.slee.resource.ActivityHandle;
 
 public class AMQPID implements ActivityHandle {
-	private final int seq;
+	private final String seq;
 
 	/**
 	 * Construct ID from an input stream, for unmarshalling.
@@ -16,14 +16,14 @@ public class AMQPID implements ActivityHandle {
 	 * @throws IOException
 	 */
 	AMQPID(DataInput in) throws IOException {
-		this.seq = in.readInt();
+		this.seq = in.readLine();
 	}
 
 	 /**
      * Construct ID from sequence number
      * @param seq
      */
-	public AMQPID(int seq) {
+	public AMQPID(String seq) {
 		
 		this.seq = seq;
 	}
@@ -35,7 +35,7 @@ public class AMQPID implements ActivityHandle {
 	 * @throws IOException
 	 */
 	void toStream(DataOutput out) throws IOException {
-		out.writeInt(seq);
+		out.writeBytes(seq);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class AMQPID implements ActivityHandle {
 	 * {@inheritDoc}
 	 */
 	public int hashCode() {
-		return 8 ^ seq;
+		return 8 ^ 15;
 	}
 
 	/**

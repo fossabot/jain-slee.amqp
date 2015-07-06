@@ -1,5 +1,7 @@
 package org.mobicents.slee.resource.amqp;
 
+import java.util.UUID;
+
 import javax.slee.facilities.Tracer;
 
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -12,23 +14,28 @@ public class AMQPListener extends Thread{
 	
 	AMQPResourceAdaptor ra;
 	
-	private int sequence = 0;
+	//private UUID sequence;
 
 	SimpleMessageListenerContainer container;
+	String queueName;
 	
 	CachingConnectionFactory cf;
 	
 	private final Tracer tracer;
 
 	public AMQPListener(Tracer tracer, AMQPResourceAdaptor ra,
-			String amqpHost, int amqpPort) {
+			String amqpHost, int amqpPort, String username, String password, 
+			String queueName) {
 		
 		this.ra = ra;
 		this.cf = new CachingConnectionFactory(amqpHost, amqpPort);
+		cf.setUsername(username);
+		cf.setPassword(password);
+		
 		container =
 	            new SimpleMessageListenerContainer(cf);
 		
-		
+		this.queueName = queueName;
 		this.tracer = tracer;
 	}
 	
@@ -39,11 +46,11 @@ public class AMQPListener extends Thread{
 		try {
 			// Create a unique ID for the connection - this is also the
 			// activity handle
-			AMQPID id = new AMQPID(sequence++);
+			AMQPID id = new AMQPID(UUID.randomUUID().toString());
 
 			// Create a new connection handler thread and start it
 			AMQPHandler conn = new AMQPHandler(tracer, ra, id,
-						cf, container);
+						cf, container, queueName);
 				conn.start();
 
 			} catch (Exception e) {

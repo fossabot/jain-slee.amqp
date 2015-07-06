@@ -2,6 +2,7 @@ package org.mobicents.slee.resource.amqp;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.slee.*;
@@ -27,6 +28,10 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 	// Config Property values
 	private String amqpHost;
 	private Integer amqpPort;
+	private String username;
+	private String password;
+	private String amqpQeueName ;
+	private String amqpExchangeName;
 	
 	
 	
@@ -100,6 +105,7 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 	private static final int STATE_INACTIVE = 1;
 	private static final int STATE_ACTIVE = 2;
 	private int state = STATE_UNCONFIGURED;
+	private AMQPResourceAdaptorSbbInterfaceImpl sbbInterface = new AMQPResourceAdaptorSbbInterfaceImpl(this);
 		
 	/**
 	 * Default constructor
@@ -142,8 +148,10 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 		// Get configuration property
 		amqpHost = (String) properties.getProperty("amqpHost").getValue();
 		amqpPort = (Integer) properties.getProperty("amqpPort").getValue();
-//		amqpQeueName = (String) properties.getProperty("amqpQeueName").getValue();
-//		amqpExchangeName = (String) properties.getProperty("amqpExchangeName").getValue();
+		username = (String) properties.getProperty("username").getValue();
+		password = (String) properties.getProperty("password").getValue();
+		amqpQeueName = (String) properties.getProperty("amqpQeueName").getValue();
+		amqpExchangeName = (String) properties.getProperty("amqpExchangeName").getValue();
 		
 		
 		
@@ -188,7 +196,7 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 
 		try{
 			
-			amqpListener = new AMQPListener (tracer, this, amqpHost, amqpPort);
+			amqpListener = new AMQPListener (tracer, this, amqpHost, amqpPort, username, password, amqpQeueName);
 			amqpListener.start();
 			setState(STATE_ACTIVE);
 		}
@@ -259,20 +267,20 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 	public void raConfigurationUpdate(ConfigProperties properties) {
 		amqpHost = (String) properties.getProperty("amqpHost").getValue();
 		amqpPort = (Integer) properties.getProperty("amqpPort").getValue();
-//		amqpQeueName = (String) properties.getProperty("amqpQeueName").getValue();
-//		amqpExchangeName = (String) properties.getProperty("amqpExchangeName").getValue();		
+		amqpQeueName = (String) properties.getProperty("amqpQeueName").getValue();
+		amqpExchangeName = (String) properties.getProperty("amqpExchangeName").getValue();		
 	}
 
 	// Interface Access -------------------------------------------------------
 
 	public Object getResourceAdaptorInterface(String className) {
-		if("org.springframework.amqp.core.AmqpAdmin".equals(className)) {
-			//TODO : return here
-			//return new AmqpAdminImpl();
-			return null;
-		}
+//		if("org.springframework.amqp.core.AmqpAdmin".equals(className)) {
+//			//TODO : return here
+//			//return new AmqpAdminImpl();
+			return this.sbbInterface;
+//		}
 
-		return null;
+//		return null;
 	}
 
 	public Marshaler getMarshaler() {
@@ -443,6 +451,40 @@ public class AMQPResourceAdaptor implements ResourceAdaptor {
 			tracer.warning("Failed to start the activity: " + e.getMessage(), e);
 		}
 		
+	}
+
+	public AMQPActivity createActivity() {
+		AMQPHandler activity = new AMQPHandler(tracer, this, 
+				new AMQPID(UUID.randomUUID().toString()), 
+				amqpListener.cf, amqpListener.container, amqpListener.queueName);
+		
+		try{
+			sleeEndpoint.startActivitySuspended(activity, activity, ActivityFlags.SLEE_MAY_MARSHAL);
+		}catch (Exception e){
+			tracer.severe("failed to start activity " + activity.getId(), e);
+		}
+		return activity;
+	}
+	
+
+	/**
+	 * 
+	 * @param activity
+	 */
+	void endActivity(AMQPHandler activity) {
+		try {
+			sleeEndpoint.endActivityTransacted(activity);
+		} catch (Exception e) {
+			tracer.severe("failed to end activity", e);
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ResourceAdaptorContext getContext() {
+		return this.raContext;
 	}
 
 }

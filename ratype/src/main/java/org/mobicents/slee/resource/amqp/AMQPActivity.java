@@ -40,6 +40,14 @@ public interface AMQPActivity {
      * service using this activity
      * has to explicitly call endActivity() method to end the Activity.
      */
+	
+	public void endActivity();
+	
+	/**
+     * Get the name of the entity that owns this activity.
+     */
+    public String getRaEntityName();
+	
     public void close();
     
     

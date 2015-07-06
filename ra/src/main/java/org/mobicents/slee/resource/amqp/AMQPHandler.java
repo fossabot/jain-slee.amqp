@@ -3,6 +3,7 @@ package org.mobicents.slee.resource.amqp;
 import java.util.Properties;
 
 import javax.slee.facilities.Tracer;
+import javax.slee.resource.ActivityHandle;
 
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.AmqpAdmin;
@@ -21,9 +22,8 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 
 import com.rabbitmq.tools.json.JSONReader;
-import com.rabbitmq.tools.json.JSONUtil;
 
-public class AMQPHandler extends Thread implements AMQPActivity{
+public class AMQPHandler extends Thread implements AMQPActivity, ActivityHandle{
 
     private boolean closed = false;
     
@@ -32,12 +32,13 @@ public class AMQPHandler extends Thread implements AMQPActivity{
 	private final Tracer tracer;
 	
 	private final SimpleMessageListenerContainer container;
+	private final String queueName;
 	private final AmqpTemplate amqpTemplate;
 	private final AmqpAdmin amqpAdmin;
 	
 
 	public AMQPHandler(Tracer tracer, AMQPResourceAdaptor ra, AMQPID id,
-			CachingConnectionFactory cf, SimpleMessageListenerContainer container) {
+			CachingConnectionFactory cf, SimpleMessageListenerContainer container, String queueName) {
 		
 		super( "AMQPHandler thread for " + id );
 		
@@ -45,6 +46,8 @@ public class AMQPHandler extends Thread implements AMQPActivity{
         this.ra = ra;
         this.id = id;
        
+        this.queueName = queueName;
+        
         this.container = container;
         this.amqpAdmin = new RabbitAdmin(cf);
         this.amqpTemplate = new RabbitTemplate(cf);
@@ -92,21 +95,21 @@ public class AMQPHandler extends Thread implements AMQPActivity{
 			        }
 			    };
 			    
+			    //declaring the queue
 			    
+			    amqpAdmin.declareQueue(new Queue(queueName));
+			    
+			    
+			    //starting the container
 			    MessageListenerAdapter adapter = new MessageListenerAdapter(listener);
 			    
 			    container.setMessageListener(adapter);
-			    container.setQueueNames("myQueue");
+			    container.setQueueNames(queueName);
 			    container.start();
 				
 			} catch (Exception e) {
-//				tracer.warning( "exception during read()", e );
 				tracer.warning( "socket closed" );
-//                break;
 			}
-//		}
-		
-//		shutdown();
 	}
 	    
 	public AMQPID getAmqpID() {
@@ -525,6 +528,20 @@ public class AMQPHandler extends Thread implements AMQPActivity{
 	@Override
 	public void removeBinding(Binding arg0) {
 		amqpAdmin.removeBinding(arg0);
+	}
+
+	@Override
+	public void endActivity() {
+		// TODO Auto-generated method stub
+		ra.endActivity(this);
+		
+		
+	}
+
+	@Override
+	public String getRaEntityName() {
+		// TODO Auto-generated method stub
+		return ra.getContext().getEntityName();
 	}
 
 
