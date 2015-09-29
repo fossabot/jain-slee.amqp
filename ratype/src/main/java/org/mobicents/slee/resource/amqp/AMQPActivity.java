@@ -483,4 +483,10 @@ public interface AMQPActivity {
 	 * @return the properties or null if the queue doesn't exist
 	 */
 	Properties getQueueProperties(String queueName);
+	
+	/**
+	 * return the queue name
+	 */
+	
+	public String getQueueName();
 }

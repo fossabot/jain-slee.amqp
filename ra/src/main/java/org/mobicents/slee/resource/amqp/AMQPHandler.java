@@ -532,7 +532,6 @@ public class AMQPHandler extends Thread implements AMQPActivity, ActivityHandle{
 
 	@Override
 	public void endActivity() {
-		// TODO Auto-generated method stub
 		ra.endActivity(this);
 		
 		
@@ -540,8 +539,12 @@ public class AMQPHandler extends Thread implements AMQPActivity, ActivityHandle{
 
 	@Override
 	public String getRaEntityName() {
-		// TODO Auto-generated method stub
 		return ra.getContext().getEntityName();
+	}
+
+	@Override
+	public String getQueueName() {
+		return this.queueName;
 	}
 
 
