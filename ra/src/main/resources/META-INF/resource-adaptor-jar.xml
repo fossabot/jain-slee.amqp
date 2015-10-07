@@ -30,12 +30,12 @@
         <config-property>
             <config-property-name>username</config-property-name>
             <config-property-type>java.lang.String</config-property-type>
-            <config-property-value>amqpra</config-property-value>
+            <config-property-value>guest</config-property-value>
         </config-property>
         <config-property>
             <config-property-name>password</config-property-name>
             <config-property-type>java.lang.String</config-property-type>
-            <config-property-value>password</config-property-value>
+            <config-property-value>guest</config-property-value>
         </config-property>
         <config-property>
             <config-property-name>amqpQeueName</config-property-name>
