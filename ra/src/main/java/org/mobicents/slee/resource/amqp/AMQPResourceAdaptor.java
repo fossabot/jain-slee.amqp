@@ -9,12 +9,6 @@ import javax.slee.*;
 import javax.slee.facilities.*;
 import javax.slee.resource.*;
 
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
-import org.springframework.amqp.rabbit.connection.Connection;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-
 /**
  * 
  * @author akrem benmarzouk

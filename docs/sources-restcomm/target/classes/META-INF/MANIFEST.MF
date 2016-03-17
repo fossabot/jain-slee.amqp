@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Implementation-Title: org.mobicents.resources:mobicents-slee-ra-amqp-d
+ ocs-sources
+Implementation-Version: 1.0
+Built-By: akrem
+Tool: Bnd-1.15.0
+Bundle-Name: mobicents-slee-ra-amqp-docs-sources
+Created-By: Apache Maven Bundle Plugin
+Implementation-URL: http://www.mobicents.org
+Implementation-Vendor-Id: TeleStax, Inc.
+Build-Jdk: 1.7.0_79
+Bundle-Version: 1.0.0
+Bnd-LastModified: 1431994601824
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.gnu.org/licenses/lgpl-2.1.html
+Bundle-Description: Mobicents :: Parent pom for 2.x releases
+Bundle-SymbolicName: org.mobicents.resources.mobicents-slee-ra-amqp-do
+ cs-sources
+Originally-Created-By: Apache Maven Bundle Plugin
+Archiver-Version: Plexus Archiver
+

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE deploy-config PUBLIC "-//Red Hat, Inc.//DTD JAIN SLEE Deploy Config 1.1//EN"
-                               "http://www.mobicents.org/slee/dtd/deploy-config_1_1.dtd">
+
 <deploy-config>
-    <ra-entity resource-adaptor-id="ResourceAdaptorID[name=AMQPResourceAdaptor,vendor=org.mobicents,version=1.0]"
-    		   entity-name="AMQPRA">
-    
-    <ra-link name="AMQPRA"/>
+	<ra-entity
+		resource-adaptor-id="ResourceAdaptorID[name=AMQPResourceAdaptor,vendor=org.mobicents,version=1.0]"
+		entity-name="AMQPRA">
+		<properties/>
+		<ra-link name="AMQPRA" />
 	</ra-entity>
 	
 </deploy-config>

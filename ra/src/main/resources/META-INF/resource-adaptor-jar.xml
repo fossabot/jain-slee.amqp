@@ -20,7 +20,7 @@
         <config-property>
             <config-property-name>amqpHost</config-property-name>
             <config-property-type>java.lang.String</config-property-type>
-            <config-property-value>localhost</config-property-value>
+            <config-property-value>amqp-host</config-property-value>
         </config-property>
         <config-property>
             <config-property-name>amqpPort</config-property-name>

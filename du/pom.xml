@@ -5,33 +5,33 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.mobicents.resources</groupId>
-		<artifactId>mobicents-slee-ra-amqp</artifactId>
+		<artifactId>restcomm-slee-ra-amqp</artifactId>
 		<version>1.0</version>
 	</parent>
 	
-	<artifactId>mobicents-slee-ra-amqp-du</artifactId>
+	<artifactId>restcomm-slee-ra-amqp-du</artifactId>
 	
-	<name>Mobicents :: Resources :: ${project.artifactId} v${project.version}</name>
+	<name>Restcomm :: Resources :: ${project.artifactId} v${project.version}</name>
 	<dependencies>
 		<dependency>
-			<groupId>org.mobicents.resources</groupId>
-			<artifactId>mobicents-slee-ra-amqp-library</artifactId>
-			<version>1.0</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>restcomm-slee-ra-amqp-library</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.mobicents.resources</groupId>
-			<artifactId>mobicents-slee-ra-amqp-events</artifactId>
-			<version>1.0</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>restcomm-slee-ra-amqp-events</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.mobicents.resources</groupId>
-			<artifactId>mobicents-slee-ra-amqp-ratype</artifactId>
-			<version>1.0</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>restcomm-slee-ra-amqp-ratype</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.mobicents.resources</groupId>
-			<artifactId>mobicents-slee-ra-amqp-ra</artifactId>
-			<version>1.0</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>restcomm-slee-ra-amqp-ra</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

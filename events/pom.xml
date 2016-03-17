@@ -5,20 +5,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.mobicents.resources</groupId>
-		<artifactId>mobicents-slee-ra-amqp</artifactId>
+		<artifactId>restcomm-slee-ra-amqp</artifactId>
 		<version>1.0</version>
 	</parent>
-	<artifactId>mobicents-slee-ra-amqp-events</artifactId>
-	<name>Mobicents :: Resources :: ${project.artifactId} v${project.version}</name>
+	<artifactId>restcomm-slee-ra-amqp-events</artifactId>
+	<name>Restcomm :: Resources :: ${project.artifactId} v${project.version}</name>
 	<dependencies>
-		<dependency>
-			<groupId>javax.slee</groupId>
-			<artifactId>jain-slee</artifactId>
-		</dependency>
+		
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>mobicents-slee-ra-amqp-library</artifactId>
-			<version>1.0</version>
+			<artifactId>restcomm-slee-ra-amqp-library</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>
