@@ -1,4 +1,6 @@
 ## jain-slee.amqp
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FRestComm%2Fjain-slee.amqp.svg?type=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FRestComm%2Fjain-slee.amqp?ref=badge_shield)
+
 
 Advanced Message Queuing Protocol (AMQP) is an open standard for passing business
 messages between applications or organizations. It connects systems, feeds business processes
@@ -12,4 +14,7 @@ This resource adaptor provides an AMQP API for JAIN SLEE applications.
 
 A short snippet describing the license (MIT, Apache, etc.)
 =======
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FRestComm%2Fjain-slee.amqp.svg?type=large)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FRestComm%2Fjain-slee.amqp?ref=badge_large)
+
 # jain-slee.amqp
